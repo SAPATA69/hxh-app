@@ -201,7 +201,7 @@
                     <a class="nav-link" href="{{ url_for('characters.add') }}">➕ เพิ่มตัวละคร</a>
                 </li>
                 <li class="nav-item px-2">
-                    <span class="nav-link nav-user">👤 {{ current_user.username }}</span>
+                    <span class="nav-link nav-user"> {{ current_user.username }}</span>
                 </li>
                 <li class="nav-item">
                     <a class="btn btn-sm btn-outline-secondary px-3"
@@ -209,7 +209,7 @@
                 </li>
                 {% else %}
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ url_for('auth.login') }}">🔑 เข้าสู่ระบบ</a>
+                    <a class="nav-link" href="{{ url_for('auth.login') }}"> เข้าสู่ระบบ</a>
                 </li>
                 <li class="nav-item">
                     <a class="btn btn-primary btn-sm px-3"
