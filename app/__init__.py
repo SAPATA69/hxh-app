@@ -47,5 +47,12 @@ def create_app():
     # Create tables
     with app.app_context():
         db.create_all()
+        from sqlalchemy import text
+        with db.engine.connect() as conn:
+            conn.execute(text("""
+                 ALTER TABLE characters 
+                 ADD COLUMN IF NOT EXISTS image TEXT
+        """))
+        conn.commit()
 
     return app
