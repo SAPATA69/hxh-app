@@ -3,19 +3,17 @@
 
 {% block content %}
 <div class="d-flex justify-content-between align-items-center mb-4">
-    <h2 style="color:#e94560;">⚡ ตัวละครทั้งหมด</h2>
-    <a href="{{ url_for('characters.add') }}" class="btn btn-primary">➕ เพิ่มตัวละคร</a>
+    <h2 class="page-title mb-0">⚡ ตัวละครทั้งหมด</h2>
+    <a href="{{ url_for('characters.add') }}" class="btn btn-primary px-4">➕ เพิ่มตัวละคร</a>
 </div>
 
-{{/* Search & Filter */}}
 <form method="GET" class="row g-2 mb-4">
     <div class="col-md-5">
         <input type="text" name="search" value="{{ search }}"
-               class="form-control bg-dark text-light border-secondary"
-               placeholder="🔍 ค้นหาชื่อตัวละคร...">
+               class="form-control" placeholder="🔍 ค้นหาชื่อตัวละคร...">
     </div>
     <div class="col-md-4">
-        <select name="nen_type" class="form-select bg-dark text-light border-secondary">
+        <select name="nen_type" class="form-select">
             <option value="">-- ทุกสายเน็น --</option>
             {% for en, th in nen_types %}
             <option value="{{ en }}" {% if nen_filter == en %}selected{% endif %}>
@@ -32,30 +30,31 @@
     </div>
 </form>
 
-{{/* Characters Grid */}}
 {% if characters %}
 <div class="row row-cols-1 row-cols-md-3 g-3">
     {% for char in characters %}
     <div class="col">
         <div class="card h-100">
             <div class="card-body">
-                <h5 class="card-title" style="color:#e94560;">{{ char.name }}</h5>
-                <span class="badge badge-{{ char.nen_type_en | lower }} mb-2">
-                    {{ char.nen_type_th }} | {{ char.nen_type_en }}
+                <h5 class="fw-bold mb-2" style="color:#7ec8ff;">{{ char.name }}</h5>
+                <span class="nen-badge nen-{{ char.nen_type_en | lower }} mb-3 d-inline-block">
+                    {{ char.nen_type_th }} · {{ char.nen_type_en }}
                 </span>
                 {% if char.ability %}
-                <p class="card-text small text-warning mb-1">⚔️ {{ char.ability }}</p>
+                <p class="small mb-1" style="color:#ffc107;">⚔️ {{ char.ability }}</p>
                 {% endif %}
                 {% if char.description %}
-                <p class="card-text small text-muted">{{ char.description | truncate(80) }}</p>
+                <p class="small mb-0" style="color:var(--text-muted);">
+                    {{ char.description | truncate(80) }}
+                </p>
                 {% endif %}
             </div>
-            <div class="card-footer d-flex gap-2">
+            <div class="card-footer d-flex gap-2 pt-2 pb-3 px-3">
                 <a href="{{ url_for('characters.edit', id=char.id) }}"
                    class="btn btn-sm btn-outline-warning flex-fill">✏️ แก้ไข</a>
                 <form method="POST" action="{{ url_for('characters.delete', id=char.id) }}"
                       onsubmit="return confirm('ลบ {{ char.name }} จริงไหมครับ?')">
-                    <button type="submit" class="btn btn-sm btn-outline-danger">🗑️ ลบ</button>
+                    <button type="submit" class="btn btn-sm btn-outline-danger px-3">🗑️</button>
                 </form>
             </div>
         </div>
@@ -63,9 +62,12 @@
     {% endfor %}
 </div>
 {% else %}
-<div class="text-center mt-5">
-    <p class="text-muted fs-5">ยังไม่มีตัวละครในระบบครับ</p>
-    <a href="{{ url_for('characters.add') }}" class="btn btn-primary">➕ เพิ่มตัวละครแรก</a>
+<div class="text-center mt-5 py-5">
+    <div style="font-size:4rem; opacity:.3;">👤</div>
+    <p style="color:var(--text-muted);" class="mt-3">ยังไม่มีตัวละครในระบบครับ</p>
+    <a href="{{ url_for('characters.add') }}" class="btn btn-primary px-4 mt-2">
+        ➕ เพิ่มตัวละครแรก
+    </a>
 </div>
 {% endif %}
 {% endblock %}

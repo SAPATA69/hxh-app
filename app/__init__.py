@@ -34,6 +34,14 @@ def create_app():
     from .characters.routes import characters
     app.register_blueprint(auth, url_prefix='/auth')
     app.register_blueprint(characters, url_prefix='/characters')
+    
+     # Root route
+    from flask import redirect, url_for
+    @app.route('/')
+    def index():
+        return redirect(url_for('characters.index'))
+    
+
 
     # Create tables
     with app.app_context():
