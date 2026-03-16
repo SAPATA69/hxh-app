@@ -22,6 +22,8 @@ flask-sqlalchemy==3.1.1
     # via hxh-app (pyproject.toml)
 greenlet==3.3.2
     # via sqlalchemy
+gunicorn==25.1.0
+    # via hxh-app (pyproject.toml)
 itsdangerous==2.2.0
     # via flask
 jinja2==3.1.6
@@ -31,6 +33,8 @@ markupsafe==3.0.3
     #   flask
     #   jinja2
     #   werkzeug
+packaging==26.0
+    # via gunicorn
 psycopg2-binary==2.9.11
     # via hxh-app (pyproject.toml)
 python-dotenv==1.2.2
