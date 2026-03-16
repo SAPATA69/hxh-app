@@ -50,9 +50,9 @@ def create_app():
         from sqlalchemy import text
         with db.engine.connect() as conn:
             conn.execute(text("""
-                 ALTER TABLE characters 
-                 ADD COLUMN IF NOT EXISTS image TEXT
-        """))
-        conn.commit()
+              ALTER TABLE characters 
+              ADD COLUMN IF NOT EXISTS image TEXT
+            """))
+            conn.commit()  # ← ต้องอยู่ใน with block นี้
 
     return app
