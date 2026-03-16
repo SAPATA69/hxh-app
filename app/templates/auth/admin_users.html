@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block title %}จัดการสมาชิก{% endblock %}
+
+{% block content %}
+<h3 class="page-title mb-4">👥 สมาชิกทั้งหมด</h3>
+<div class="card">
+    <div class="table-responsive">
+        <table class="table table-dark table-hover mb-0">
+            <thead style="border-bottom:1px solid var(--border-color);">
+                <tr>
+                    <th>#</th>
+                    <th>ชื่อผู้ใช้</th>
+                    <th>อีเมล</th>
+                    <th>สมัครเมื่อ</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                <tr>
+                    <td style="color:var(--text-muted);">{{ user.id }}</td>
+                    <td style="color:#7ec8ff;">{{ user.username }}</td>
+                    <td style="color:var(--text-muted);">{{ user.email }}</td>
+                    <td style="color:var(--text-muted);">
+                        {{ user.created_at.strftime('%d/%m/%Y %H:%M') }}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

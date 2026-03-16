@@ -2,6 +2,15 @@ from flask import Blueprint, render_template, redirect, url_for, flash, request
 from flask_login import login_user, logout_user, login_required, current_user
 from ..models import db, User
 
+from flask_login import login_required, current_user
+
+@auth.route('/admin/users')
+@login_required
+def admin_users():
+    users = User.query.order_by(User.created_at.desc()).all()
+    return render_template('auth/admin_users.html', users=users)
+
+
 auth = Blueprint('auth', __name__)
 
 # -------------------- REGISTER --------------------
