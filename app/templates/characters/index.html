@@ -8,7 +8,7 @@
     {% else %}
     <div class="text-center mb-3" style="height:100px; background:#0a1525;
          border-radius:8px; display:flex; align-items:center; justify-content:center;">
-        <span style="font-size:3rem; opacity:.3;">👤</span>
+        <span style="font-size:3rem; opacity:.3;"></span>
     </div>
     {% endif %}
 
@@ -17,7 +17,7 @@
         {{ char.nen_type_th }} · {{ char.nen_type_en }}
     </span>
     {% if char.ability %}
-    <p class="small mb-1" style="color:#ffc107;">⚔️ {{ char.ability }}</p>
+    <p class="small mb-1" style="color:#ffc107;"> {{ char.ability }}</p>
     {% endif %}
     {% if char.description %}
     <p class="small mb-0" style="color:var(--text-muted);">

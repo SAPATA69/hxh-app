@@ -34,6 +34,7 @@ class Character(db.Model):
     nen_type_th = db.Column(db.String(50), nullable=False)   # สายเสริมพลัง, etc.
     ability     = db.Column(db.String(200))                  # ความสามารถหลัก
     description = db.Column(db.Text)                         # รายละเอียด
+    image       = db.Column(db.Text)   # ← เพิ่มบรรทัดนี้ (เก็บ base64)
     created_at  = db.Column(db.DateTime, default=datetime.utcnow)
 
     def __repr__(self):
