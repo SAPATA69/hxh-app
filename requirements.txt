@@ -47,3 +47,5 @@ werkzeug==3.1.6
     # via
     #   flask
     #   flask-login
+
+pillow>=11.0.0    

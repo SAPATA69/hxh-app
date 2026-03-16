@@ -1,7 +1,9 @@
 from flask import Blueprint, render_template, redirect, url_for, flash, request
 from flask_login import login_required
 from ..models import db, Character
+from PIL import Image
 import base64
+import io
 
 characters = Blueprint('characters', __name__)
 
@@ -14,14 +16,33 @@ NEN_TYPES = [
     ('Specialization', 'สายพิเศษ'),
 ]
 
-def save_image(file):
-    """แปลงไฟล์รูปเป็น base64 string"""
-    if file and file.filename != '':
-        data = file.read()
-        ext = file.filename.rsplit('.', 1)[-1].lower()
-        mime = f'image/{ext}' if ext != 'jpg' else 'image/jpeg'
-        return f'data:{mime};base64,{base64.b64encode(data).decode()}'
-    return None
+def save_image(file, max_size_kb=500, max_dimension=1024):
+    """บีบอัดรูปก่อนแปลงเป็น base64 — รับได้ทุกขนาด ผลลัพธ์ไม่เกิน max_size_kb"""
+    if not file or file.filename == '':
+        return None
+
+    img = Image.open(file.stream)
+
+    # แปลงเป็น RGB เผื่อรูป PNG มี alpha channel (RGBA) หรือ palette (P)
+    if img.mode in ('RGBA', 'P'):
+        img = img.convert('RGB')
+
+    # ย่อ dimension ถ้ากว้าง/สูงเกิน max_dimension (คงสัดส่วนไว้)
+    img.thumbnail((max_dimension, max_dimension), Image.LANCZOS)
+
+    # บีบ quality ลงเรื่อยๆ จนขนาดไม่เกิน max_size_kb
+    quality = 85
+    while quality >= 20:
+        buffer = io.BytesIO()
+        img.save(buffer, format='JPEG', quality=quality, optimize=True)
+        if buffer.tell() / 1024 <= max_size_kb:
+            break
+        quality -= 10
+
+    buffer.seek(0)
+    encoded = base64.b64encode(buffer.read()).decode()
+    return f'data:image/jpeg;base64,{encoded}'
+
 
 # -------------------- INDEX --------------------
 @characters.route('/')
@@ -42,6 +63,7 @@ def index():
                            nen_types=NEN_TYPES,
                            search=search,
                            nen_filter=nen_filter)
+
 
 # -------------------- ADD --------------------
 @characters.route('/add', methods=['GET', 'POST'])
@@ -68,6 +90,7 @@ def add():
 
     return render_template('characters/add.html', nen_types=NEN_TYPES)
 
+
 # -------------------- EDIT --------------------
 @characters.route('/edit/<int:id>', methods=['GET', 'POST'])
 @login_required
@@ -92,6 +115,7 @@ def edit(id):
         return redirect(url_for('characters.index'))
 
     return render_template('characters/edit.html', character=char, nen_types=NEN_TYPES)
+
 
 # -------------------- DELETE --------------------
 @characters.route('/delete/<int:id>', methods=['POST'])
