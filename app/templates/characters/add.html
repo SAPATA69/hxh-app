@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block title %}เพิ่มตัวละคร{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card p-4">
+            <h3 class="mb-4" style="color:#e94560;">➕ เพิ่มตัวละครใหม่</h3>
+            <form method="POST">
+                <div class="mb-3">
+                    <label class="form-label">ชื่อตัวละคร *</label>
+                    <input type="text" name="name" class="form-control bg-dark text-light border-secondary" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">สายเน็น *</label>
+                    <select name="nen_type_en" class="form-select bg-dark text-light border-secondary" required>
+                        <option value="">-- เลือกสายเน็น --</option>
+                        {% for en, th in nen_types %}
+                        <option value="{{ en }}">{{ th }} ({{ en }})</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">ความสามารถหลัก</label>
+                    <input type="text" name="ability" class="form-control bg-dark text-light border-secondary"
+                           placeholder="เช่น Jajanken, Godspeed">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">รายละเอียด</label>
+                    <textarea name="description" rows="3"
+                              class="form-control bg-dark text-light border-secondary"
+                              placeholder="อธิบายตัวละครเพิ่มเติม..."></textarea>
+                </div>
+                <div class="d-flex gap-2">
+                    <button type="submit" class="btn btn-primary flex-fill">💾 บันทึก</button>
+                    <a href="{{ url_for('characters.index') }}" class="btn btn-outline-secondary flex-fill">ยกเลิก</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
