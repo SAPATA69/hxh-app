@@ -1,9 +1,10 @@
+# render.yaml
 services:
   - type: web
     name: hxh-app
     runtime: python
     buildCommand: pip install -r requirements.txt
-    startCommand: gunicorn run:app
+    startCommand: gunicorn run:app --bind 0.0.0.0:$PORT
     envVars:
       - key: DATABASE_URL
         sync: false
