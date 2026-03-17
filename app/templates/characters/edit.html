@@ -3,15 +3,22 @@
 
 {% block content %}
 <div class="row justify-content-center">
-    <div class="col-md-6">
-        <h3 class="page-title mb-4"> แก้ไข: {{ character.name }}</h3>
+    <div class="col-md-7">
+        <h3 class="page-title mb-4">✏️ แก้ไข: {{ character.name }}</h3>
         <div class="card p-4">
             <form method="POST" enctype="multipart/form-data">
+
+                <!-- ── ข้อมูลพื้นฐาน ── -->
+                <div class="section-label mb-3" style="color:#7ec8ff; font-size:.85rem; font-weight:700; letter-spacing:.5px; text-transform:uppercase;">
+                    ข้อมูลพื้นฐาน
+                </div>
+
                 <div class="mb-3">
                     <label class="form-label">ชื่อตัวละคร *</label>
                     <input type="text" name="name" value="{{ character.name }}"
                            class="form-control" required>
                 </div>
+
                 <div class="mb-3">
                     <label class="form-label">สายเน็น *</label>
                     <select name="nen_type_en" class="form-select" required>
@@ -22,42 +29,99 @@
                         {% endfor %}
                     </select>
                 </div>
+
                 <div class="mb-3">
                     <label class="form-label">ความสามารถหลัก</label>
                     <input type="text" name="ability" value="{{ character.ability or '' }}"
                            class="form-control">
                 </div>
+
                 <div class="mb-3">
-                    <label class="form-label">รายละเอียด</label>
-                    <textarea name="description" rows="3"
+                    <label class="form-label">รายละเอียดย่อ</label>
+                    <textarea name="description" rows="2"
                               class="form-control">{{ character.description or '' }}</textarea>
                 </div>
 
-                <!-- รูปปัจจุบัน + อัปโหลดใหม่ -->
-                <div class="mb-4">
-                    <label class="form-label"> รูปภาพตัวละคร</label>
+                <hr class="glow-divider">
+
+                <!-- ── รูปภาพ ── -->
+                <div class="section-label mb-3" style="color:#7ec8ff; font-size:.85rem; font-weight:700; letter-spacing:.5px; text-transform:uppercase;">
+                    รูปภาพ
+                </div>
+
+                <!-- Main Image -->
+                <div class="mb-3">
+                    <label class="form-label">🖼️ รูปหลักของตัวละคร</label>
                     {% if character.image %}
                     <div class="mb-2 text-center">
                         <p style="color:var(--text-muted); font-size:.85rem;">รูปปัจจุบัน:</p>
                         <img src="{{ character.image }}"
-                             style="max-height:180px; border-radius:10px; border:1px solid var(--border-color);">
+                             style="max-height:160px; border-radius:10px; border:1px solid var(--border-color);">
                     </div>
                     {% endif %}
                     <input type="file" name="image" id="imageInput"
                            class="form-control" accept="image/*"
-                           onchange="previewImage(this)">
-                    <small style="color:var(--text-muted);">
-                        ถ้าไม่เลือกรูปใหม่ รูปเดิมจะถูกเก็บไว้
-                    </small>
-                    <div id="preview" class="mt-2 text-center" style="display:none;">
-                        <img id="previewImg" src=""
+                           onchange="previewMain(this)">
+                    <small style="color:var(--text-muted);">ถ้าไม่เลือกรูปใหม่ รูปเดิมจะถูกเก็บไว้</small>
+                    <div id="mainPreview" class="mt-2 text-center" style="display:none;">
+                        <img id="mainPreviewImg" src=""
                              style="max-height:200px; border-radius:10px; border:1px solid var(--border-color);">
                     </div>
                 </div>
 
+                <!-- Gallery -->
+                <div class="mb-4">
+                    <label class="form-label">🗂️ แกลเลอรี่รูปภาพ
+                        <span style="color:var(--text-muted); font-weight:400;">(สูงสุด 5 รูป)</span>
+                    </label>
+
+                    {% if existing_gallery %}
+                    <!-- Existing gallery thumbnails -->
+                    <div class="mb-2">
+                        <p style="color:var(--text-muted); font-size:.85rem;">รูปในแกลเลอรี่ปัจจุบัน ({{ existing_gallery | length }} รูป):</p>
+                        <div class="d-flex flex-wrap gap-2 mb-2">
+                            {% for img in existing_gallery %}
+                            <img src="{{ img }}"
+                                 style="width:72px; height:72px; object-fit:cover; border-radius:8px;
+                                        border:1px solid var(--border-color);"
+                                 alt="gallery {{ loop.index }}">
+                            {% endfor %}
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" name="keep_gallery" id="keepGallery"
+                                   class="form-check-input" checked>
+                            <label for="keepGallery" class="form-check-label"
+                                   style="color:var(--text-muted); font-size:.88rem;">
+                                เก็บรูปแกลเลอรี่เดิมไว้ (รูปใหม่จะถูกเพิ่มต่อ)
+                            </label>
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    <input type="file" name="gallery_images" id="galleryInput"
+                           class="form-control" accept="image/*" multiple
+                           onchange="previewGallery(this)">
+                    <small style="color:var(--text-muted);">เลือกได้หลายรูปพร้อมกัน · รวมกับเดิมได้ไม่เกิน 5 รูป</small>
+                    <div id="galleryPreview" class="d-flex flex-wrap gap-2 mt-2"></div>
+                </div>
+
+                <hr class="glow-divider">
+
+                <!-- ── ประวัติ ── -->
+                <div class="section-label mb-3" style="color:#7ec8ff; font-size:.85rem; font-weight:700; letter-spacing:.5px; text-transform:uppercase;">
+                    ประวัติตัวละคร
+                </div>
+
+                <div class="mb-4">
+                    <label class="form-label">📜 ประวัติและรายละเอียด</label>
+                    <textarea name="biography" rows="12" class="form-control"
+                              placeholder="เขียนประวัติตัวละครแบบยาวๆ ได้เลยครับ...">{{ character.biography or '' }}</textarea>
+                    <small style="color:var(--text-muted);">รองรับการขึ้นบรรทัดใหม่</small>
+                </div>
+
                 <div class="d-flex gap-2">
-                    <button type="submit" class="btn btn-primary flex-fill py-2"> บันทึก</button>
-                    <a href="{{ url_for('characters.index') }}"
+                    <button type="submit" class="btn btn-primary flex-fill py-2">💾 บันทึก</button>
+                    <a href="{{ url_for('characters.detail', id=character.id) }}"
                        class="btn btn-outline-secondary flex-fill py-2">ยกเลิก</a>
                 </div>
             </form>
@@ -66,17 +130,38 @@
 </div>
 
 <script>
-function previewImage(input) {
-    const preview = document.getElementById('preview');
-    const img = document.getElementById('previewImg');
+function previewMain(input) {
+    const preview = document.getElementById('mainPreview');
+    const img = document.getElementById('mainPreviewImg');
     if (input.files && input.files[0]) {
         const reader = new FileReader();
-        reader.onload = e => {
-            img.src = e.target.result;
-            preview.style.display = 'block';
-        };
+        reader.onload = e => { img.src = e.target.result; preview.style.display = 'block'; };
         reader.readAsDataURL(input.files[0]);
     }
+}
+
+function previewGallery(input) {
+    const container = document.getElementById('galleryPreview');
+    container.innerHTML = '';
+    const files = Array.from(input.files).slice(0, 5);
+    files.forEach((file, idx) => {
+        const reader = new FileReader();
+        reader.onload = e => {
+            const wrap = document.createElement('div');
+            wrap.style.cssText = 'position:relative; display:inline-block;';
+            wrap.innerHTML = `
+                <img src="${e.target.result}"
+                     style="width:80px; height:80px; object-fit:cover; border-radius:8px;
+                            border:1px solid var(--border-color);">
+                <span style="position:absolute; top:-6px; right:-6px; background:#1e90ff;
+                             color:#fff; font-size:.65rem; width:18px; height:18px;
+                             border-radius:50%; display:flex; align-items:center; justify-content:center;
+                             font-weight:700;">+${idx + 1}</span>
+            `;
+            container.appendChild(wrap);
+        };
+        reader.readAsDataURL(file);
+    });
 }
 </script>
 {% endblock %}

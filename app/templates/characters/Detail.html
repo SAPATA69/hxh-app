@@ -1,0 +1,411 @@
+{% extends 'base.html' %}
+{% block title %}{{ character.name }} — รายละเอียด{% endblock %}
+
+{% block content %}
+<style>
+  /* ── Detail Hero ── */
+  .detail-hero {
+    position: relative;
+    border-radius: 16px;
+    overflow: hidden;
+    background: linear-gradient(135deg, var(--bg-card) 0%, #0a1a3a 100%);
+    border: 1px solid var(--border-color);
+    margin-bottom: 2rem;
+  }
+  .detail-hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at top right, {{ nen_color }}22 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .hero-inner {
+    display: flex;
+    gap: 2rem;
+    padding: 2rem;
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+  .hero-portrait {
+    flex-shrink: 0;
+    width: 220px;
+  }
+  .hero-portrait img {
+    width: 220px;
+    height: 280px;
+    object-fit: cover;
+    border-radius: 12px;
+    border: 2px solid {{ nen_color }}66;
+    box-shadow: 0 8px 32px {{ nen_color }}33;
+  }
+  .hero-portrait .no-img {
+    width: 220px;
+    height: 280px;
+    border-radius: 12px;
+    border: 2px solid var(--border-color);
+    background: #0a1525;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 4rem;
+    opacity: .4;
+  }
+  .hero-info {
+    flex: 1;
+    min-width: 220px;
+  }
+  .hero-name {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: #e8f4ff;
+    text-shadow: 0 0 30px {{ nen_color }}55;
+    margin-bottom: .5rem;
+    line-height: 1.2;
+  }
+  .hero-ability {
+    font-size: 1rem;
+    color: #ffc107;
+    margin-bottom: 1rem;
+    font-weight: 600;
+  }
+  .hero-desc {
+    color: var(--text-muted);
+    line-height: 1.7;
+    margin-bottom: 1.5rem;
+    font-size: .95rem;
+  }
+
+  /* ── Nen Usage Mini Bars ── */
+  .nen-usage-mini {
+    background: #060e1e;
+    border-radius: 10px;
+    border: 1px solid var(--border-color);
+    padding: 1rem;
+    margin-top: 1rem;
+  }
+  .nen-usage-mini p {
+    color: var(--text-muted);
+    font-size: .8rem;
+    margin-bottom: .75rem;
+  }
+
+  /* ── Biography Section ── */
+  .bio-section {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+  }
+  .bio-section h4 {
+    color: {{ nen_color }};
+    font-weight: 700;
+    font-size: 1.1rem;
+    margin-bottom: 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+  }
+  .bio-section h4::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, {{ nen_color }}66, transparent);
+  }
+  .bio-content {
+    color: var(--text-main);
+    line-height: 1.9;
+    font-size: .95rem;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+  .bio-empty {
+    color: var(--text-muted);
+    font-style: italic;
+    font-size: .9rem;
+  }
+
+  /* ── Gallery Carousel ── */
+  .gallery-section {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+  }
+  .gallery-section h4 {
+    color: {{ nen_color }};
+    font-weight: 700;
+    font-size: 1.1rem;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+  }
+  .gallery-section h4::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, {{ nen_color }}66, transparent);
+  }
+
+  /* Custom Carousel */
+  .nen-carousel {
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+    background: #060e1e;
+    border: 1px solid var(--border-color);
+  }
+  .nen-carousel .carousel-inner {
+    border-radius: 12px;
+  }
+  .nen-carousel .carousel-item img {
+    width: 100%;
+    max-height: 480px;
+    object-fit: contain;
+    background: #060e1e;
+  }
+  .nen-carousel .carousel-control-prev,
+  .nen-carousel .carousel-control-next {
+    width: 48px;
+    height: 48px;
+    background: {{ nen_color }}33;
+    border: 1px solid {{ nen_color }}66;
+    border-radius: 50%;
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: 1;
+    transition: background .2s;
+  }
+  .nen-carousel .carousel-control-prev { left: 12px; }
+  .nen-carousel .carousel-control-next { right: 12px; }
+  .nen-carousel .carousel-control-prev:hover,
+  .nen-carousel .carousel-control-next:hover {
+    background: {{ nen_color }}66;
+  }
+  .nen-carousel .carousel-indicators {
+    margin-bottom: .5rem;
+  }
+  .nen-carousel .carousel-indicators [data-bs-target] {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: {{ nen_color }}66;
+    border: none;
+    transition: all .2s;
+  }
+  .nen-carousel .carousel-indicators .active {
+    background: {{ nen_color }};
+    width: 24px;
+    border-radius: 4px;
+  }
+  .carousel-counter {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: #000a;
+    color: {{ nen_color }};
+    font-size: .78rem;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 20px;
+    border: 1px solid {{ nen_color }}44;
+    z-index: 10;
+  }
+
+  /* Thumbnail strip */
+  .gallery-thumbs {
+    display: flex;
+    gap: .5rem;
+    margin-top: .75rem;
+    flex-wrap: wrap;
+  }
+  .gallery-thumb {
+    width: 72px;
+    height: 72px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: all .2s;
+    opacity: .6;
+  }
+  .gallery-thumb.active,
+  .gallery-thumb:hover {
+    border-color: {{ nen_color }};
+    opacity: 1;
+    box-shadow: 0 0 8px {{ nen_color }}55;
+  }
+
+  /* ── Action bar ── */
+  .action-bar {
+    display: flex;
+    gap: .75rem;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+  }
+</style>
+
+<!-- Back + Edit buttons -->
+<div class="action-bar">
+  <a href="{{ url_for('characters.index') }}" class="btn btn-outline-secondary">
+    ← กลับหน้าหลัก
+  </a>
+  {% if current_user.is_authenticated %}
+  <a href="{{ url_for('characters.edit', id=character.id) }}" class="btn btn-outline-warning">
+    ✏️ แก้ไขตัวละคร
+  </a>
+  <form method="POST" action="{{ url_for('characters.delete', id=character.id) }}"
+        onsubmit="return confirm('ลบ {{ character.name }} จริงๆ เหรอครับ?')"
+        style="display:inline;">
+    <button type="submit" class="btn btn-outline-danger">🗑️ ลบ</button>
+  </form>
+  {% endif %}
+</div>
+
+<!-- ── Hero Section ── -->
+<div class="detail-hero">
+  <div class="hero-inner">
+    <!-- Portrait -->
+    <div class="hero-portrait">
+      {% if character.image %}
+      <img src="{{ character.image }}" alt="{{ character.name }}">
+      {% else %}
+      <div class="no-img">👤</div>
+      {% endif %}
+    </div>
+
+    <!-- Info -->
+    <div class="hero-info">
+      <div class="mb-2">
+        <span class="nen-badge nen-{{ character.nen_type_en | lower }}">
+          {{ character.nen_type_th }} · {{ character.nen_type_en }}
+        </span>
+      </div>
+      <div class="hero-name">{{ character.name }}</div>
+      {% if character.ability %}
+      <div class="hero-ability">⚔️ {{ character.ability }}</div>
+      {% endif %}
+      {% if character.description %}
+      <div class="hero-desc">{{ character.description }}</div>
+      {% endif %}
+
+      <!-- Nen Usage Bars -->
+      {% if nen_usage %}
+      <div class="nen-usage-mini">
+        <p>⚡ อัตราการใช้สายเน็นอื่น:</p>
+        {% for type_name, pct in nen_usage.items() %}
+        <div class="mb-2">
+          <div class="d-flex justify-content-between mb-1">
+            <small style="color:var(--text-muted); font-size:.75rem;">{{ type_name }}</small>
+            <small style="color:{{ nen_color }}; font-weight:600; font-size:.75rem;">{{ pct }}%</small>
+          </div>
+          <div style="background:#0a1525; border-radius:4px; height:5px; overflow:hidden;">
+            <div style="width:{{ pct }}%; height:100%; background:{{ nen_color }};
+                        border-radius:4px; box-shadow:0 0 6px {{ nen_color }}88;"></div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+<!-- ── Gallery Carousel ── -->
+{% if gallery %}
+<div class="gallery-section">
+  <h4>🖼️ แกลเลอรี่รูปภาพ</h4>
+
+  <div id="nenCarousel" class="nen-carousel carousel slide" data-bs-ride="false">
+    <!-- Counter -->
+    <div class="carousel-counter">
+      <span id="carouselCurrent">1</span> / {{ gallery | length }}
+    </div>
+
+    <!-- Indicators -->
+    <div class="carousel-indicators">
+      {% for img in gallery %}
+      <button type="button" data-bs-target="#nenCarousel"
+              data-bs-slide-to="{{ loop.index0 }}"
+              {% if loop.first %}class="active" aria-current="true"{% endif %}
+              aria-label="Slide {{ loop.index }}"></button>
+      {% endfor %}
+    </div>
+
+    <!-- Slides -->
+    <div class="carousel-inner">
+      {% for img in gallery %}
+      <div class="carousel-item {% if loop.first %}active{% endif %}">
+        <img src="{{ img }}" alt="Gallery {{ loop.index }}" class="d-block w-100">
+      </div>
+      {% endfor %}
+    </div>
+
+    <!-- Controls -->
+    {% if gallery | length > 1 %}
+    <button class="carousel-control-prev" type="button"
+            data-bs-target="#nenCarousel" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button"
+            data-bs-target="#nenCarousel" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
+    {% endif %}
+  </div>
+
+  <!-- Thumbnail strip -->
+  {% if gallery | length > 1 %}
+  <div class="gallery-thumbs mt-3">
+    {% for img in gallery %}
+    <img src="{{ img }}"
+         class="gallery-thumb {% if loop.first %}active{% endif %}"
+         alt="thumb {{ loop.index }}"
+         data-slide="{{ loop.index0 }}"
+         onclick="goToSlide({{ loop.index0 }})">
+    {% endfor %}
+  </div>
+  {% endif %}
+</div>
+{% endif %}
+
+<!-- ── Biography Section ── -->
+<div class="bio-section">
+  <h4>📜 ประวัติและรายละเอียด</h4>
+  {% if character.biography %}
+  <div class="bio-content">{{ character.biography }}</div>
+  {% else %}
+  <div class="bio-empty">
+    ยังไม่มีประวัติตัวละครนี้ครับ
+    {% if current_user.is_authenticated %}
+    — <a href="{{ url_for('characters.edit', id=character.id) }}"
+         style="color:var(--blue-primary);">คลิกแก้ไขเพื่อเพิ่มประวัติ</a>
+    {% endif %}
+  </div>
+  {% endif %}
+</div>
+
+<script>
+// Update counter on slide change
+const carousel = document.getElementById('nenCarousel');
+if (carousel) {
+  carousel.addEventListener('slid.bs.carousel', function(e) {
+    const idx = e.to;
+    document.getElementById('carouselCurrent').textContent = idx + 1;
+    // Update thumbnails
+    document.querySelectorAll('.gallery-thumb').forEach((t, i) => {
+      t.classList.toggle('active', i === idx);
+    });
+  });
+}
+
+function goToSlide(idx) {
+  const c = bootstrap.Carousel.getOrCreateInstance(document.getElementById('nenCarousel'));
+  c.to(idx);
+}
+</script>
+{% endblock %}

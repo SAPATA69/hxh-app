@@ -4,6 +4,7 @@ from ..models import db, Character
 from PIL import Image
 import base64
 import io
+import json
 
 characters = Blueprint('characters', __name__)
 
@@ -24,7 +25,7 @@ NEN_USAGE = {
     'Manipulation':   {'สายควบคุม (Manipulation)': 100, 'สายแผ่พุ่ง (Emission)': 80, 'สายแปรสภาพ (Conjuration)': 60, 'สายเสริมพลัง (Enhancement)': 60, 'สายเปลี่ยนแปลง (Transmutation)': 40, 'สายพิเศษ (Specialization)': 0},
     'Emission':       {'สายแผ่พุ่ง (Emission)': 100, 'สายควบคุม (Manipulation)': 80, 'สายเสริมพลัง (Enhancement)': 80, 'สายเปลี่ยนแปลง (Transmutation)': 60, 'สายแปรสภาพ (Conjuration)': 40, 'สายพิเศษ (Specialization)': 0},
 }
-# ❌ ลบ return ที่หลุดออกมาตรงนี้แล้ว
+
 
 def save_image(file, max_size_kb=500, max_dimension=1024):
     if not file or file.filename == '':
@@ -45,6 +46,19 @@ def save_image(file, max_size_kb=500, max_dimension=1024):
     return f'data:image/jpeg;base64,{encoded}'
 
 
+def save_gallery_images(files, max_images=5, max_size_kb=600, max_dimension=1200):
+    """Save multiple images for gallery, return JSON string of base64 array."""
+    images = []
+    for file in files:
+        if len(images) >= max_images:
+            break
+        if file and file.filename != '':
+            img_data = save_image(file, max_size_kb, max_dimension)
+            if img_data:
+                images.append(img_data)
+    return json.dumps(images) if images else None
+
+
 # -------------------- INDEX --------------------
 @characters.route('/')
 def index():
@@ -63,6 +77,33 @@ def index():
                            nen_filter=nen_filter)
 
 
+# -------------------- DETAIL --------------------
+@characters.route('/<int:id>')
+def detail(id):
+    char = Character.query.get_or_404(id)
+    gallery = []
+    if char.gallery_images:
+        try:
+            gallery = json.loads(char.gallery_images)
+        except Exception:
+            gallery = []
+    nen_usage = NEN_USAGE.get(char.nen_type_en, {})
+    nen_color_map = {
+        'Enhancement': '#4caf50',
+        'Emission': '#1e90ff',
+        'Transmutation': '#ffc107',
+        'Conjuration': '#ab47bc',
+        'Manipulation': '#ff8c42',
+        'Specialization': '#ef5350',
+    }
+    nen_color = nen_color_map.get(char.nen_type_en, '#1e90ff')
+    return render_template('characters/detail.html',
+                           character=char,
+                           gallery=gallery,
+                           nen_usage=nen_usage,
+                           nen_color=nen_color)
+
+
 # -------------------- ADD --------------------
 @characters.route('/add', methods=['GET', 'POST'])
 @login_required
@@ -71,20 +112,26 @@ def add():
         nen_en = request.form.get('nen_type_en')
         nen_th = dict(NEN_TYPES).get(nen_en, '')
         image_data = save_image(request.files.get('image'))
+
+        # Handle gallery images (up to 5)
+        gallery_files = request.files.getlist('gallery_images')
+        gallery_data = save_gallery_images(gallery_files)
+
         char = Character(
-            name        = request.form.get('name'),
-            nen_type_en = nen_en,
-            nen_type_th = nen_th,
-            ability     = request.form.get('ability'),
-            description = request.form.get('description'),
-            image       = image_data,
+            name           = request.form.get('name'),
+            nen_type_en    = nen_en,
+            nen_type_th    = nen_th,
+            ability        = request.form.get('ability'),
+            description    = request.form.get('description'),
+            biography      = request.form.get('biography'),
+            image          = image_data,
+            gallery_images = gallery_data,
         )
         db.session.add(char)
         db.session.commit()
         flash(f'เพิ่ม {char.name} สำเร็จแล้วครับ!', 'success')
         return redirect(url_for('characters.index'))
 
-    # ✅ return อยู่ใน function และมี nen_usage แล้ว
     return render_template('characters/add.html', nen_types=NEN_TYPES, nen_usage=NEN_USAGE)
 
 
@@ -100,13 +147,48 @@ def edit(id):
         char.nen_type_th = dict(NEN_TYPES).get(nen_en, '')
         char.ability     = request.form.get('ability')
         char.description = request.form.get('description')
+        char.biography   = request.form.get('biography')
+
         new_image = save_image(request.files.get('image'))
         if new_image:
             char.image = new_image
+
+        # Handle gallery: new uploads + keep existing
+        gallery_files = request.files.getlist('gallery_images')
+        new_gallery = []
+        for f in gallery_files:
+            if f and f.filename != '':
+                img = save_image(f, max_size_kb=600, max_dimension=1200)
+                if img:
+                    new_gallery.append(img)
+
+        # Merge with existing gallery (if "keep_gallery" checked)
+        keep_existing = request.form.get('keep_gallery') == 'on'
+        if keep_existing and char.gallery_images:
+            try:
+                existing = json.loads(char.gallery_images)
+            except Exception:
+                existing = []
+            combined = existing + new_gallery
+            char.gallery_images = json.dumps(combined[:5]) if combined else None
+        else:
+            char.gallery_images = json.dumps(new_gallery[:5]) if new_gallery else char.gallery_images
+
         db.session.commit()
         flash(f'แก้ไข {char.name} สำเร็จแล้วครับ!', 'success')
-        return redirect(url_for('characters.index'))
-    return render_template('characters/edit.html', character=char, nen_types=NEN_TYPES)
+        return redirect(url_for('characters.detail', id=char.id))
+
+    existing_gallery = []
+    if char.gallery_images:
+        try:
+            existing_gallery = json.loads(char.gallery_images)
+        except Exception:
+            existing_gallery = []
+
+    return render_template('characters/edit.html',
+                           character=char,
+                           nen_types=NEN_TYPES,
+                           existing_gallery=existing_gallery)
 
 
 # -------------------- DELETE --------------------

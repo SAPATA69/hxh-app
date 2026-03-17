@@ -30,11 +30,13 @@ class Character(db.Model):
 
     id          = db.Column(db.Integer, primary_key=True)
     name        = db.Column(db.String(100), nullable=False)
-    nen_type_en = db.Column(db.String(50), nullable=False)   # Enhancement, Emission, etc.
-    nen_type_th = db.Column(db.String(50), nullable=False)   # สายเสริมพลัง, etc.
-    ability     = db.Column(db.String(200))                  # ความสามารถหลัก
-    description = db.Column(db.Text)                         # รายละเอียด
-    image       = db.Column(db.Text)   # ← เพิ่มบรรทัดนี้ (เก็บ base64)
+    nen_type_en = db.Column(db.String(50), nullable=False)
+    nen_type_th = db.Column(db.String(50), nullable=False)
+    ability     = db.Column(db.String(200))
+    description = db.Column(db.Text)
+    image       = db.Column(db.Text)         # main image (base64)
+    biography   = db.Column(db.Text)         # long-form history/biography
+    gallery_images = db.Column(db.Text)      # JSON array of base64 images (up to 5)
     created_at  = db.Column(db.DateTime, default=datetime.utcnow)
 
     def __repr__(self):

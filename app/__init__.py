@@ -15,7 +15,7 @@ def create_app():
     app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'fallback-secret')
     app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-    app.config['MAX_CONTENT_LENGTH'] = 10 * 1024 * 1024  # รับได้ 10MB แล้วค่อยบีบ
+    app.config['MAX_CONTENT_LENGTH'] = 30 * 1024 * 1024  # 30MB for gallery uploads
 
     # Init extensions
     db.init_app(app)
@@ -35,24 +35,30 @@ def create_app():
     from .characters.routes import characters
     app.register_blueprint(auth, url_prefix='/auth')
     app.register_blueprint(characters, url_prefix='/characters')
-    
-     # Root route
+
+    # Root route
     from flask import redirect, url_for
     @app.route('/')
     def index():
         return redirect(url_for('characters.index'))
-    
 
-
-    # Create tables
+    # Create tables + migrate new columns
     with app.app_context():
         db.create_all()
         from sqlalchemy import text
         with db.engine.connect() as conn:
             conn.execute(text("""
-              ALTER TABLE characters 
+              ALTER TABLE characters
               ADD COLUMN IF NOT EXISTS image TEXT
             """))
-            conn.commit()  # ← ต้องอยู่ใน with block นี้
+            conn.execute(text("""
+              ALTER TABLE characters
+              ADD COLUMN IF NOT EXISTS biography TEXT
+            """))
+            conn.execute(text("""
+              ALTER TABLE characters
+              ADD COLUMN IF NOT EXISTS gallery_images TEXT
+            """))
+            conn.commit()
 
     return app
