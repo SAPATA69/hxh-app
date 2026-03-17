@@ -95,8 +95,7 @@ def add():
         db.session.commit()
         flash(f'เพิ่ม {char.name} สำเร็จแล้วครับ!', 'success')
         return redirect(url_for('characters.index'))
-
-    return render_template('characters/add.html', nen_types=NEN_TYPES)
+ return render_template('characters/add.html', nen_types=NEN_TYPES)
 
 
 # -------------------- EDIT --------------------
