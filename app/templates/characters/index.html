@@ -7,6 +7,21 @@
     <a href="{{ url_for('characters.add') }}" class="btn btn-primary px-4">➕ เพิ่มตัวละคร</a>
 </div>
 
+<!-- Nen Guide Banner -->
+<div class="card p-3 mb-4 d-flex flex-row align-items-center justify-content-between"
+     style="background:linear-gradient(135deg,#0d1b2e,#0a1a3a); border-color:#1e90ff44;">
+    <div>
+        <p class="mb-0 fw-bold" style="color:#7ec8ff;">📖 ยังไม่รู้จักสายเน็น?</p>
+        <small style="color:var(--text-muted);">
+            ดูคู่มือสายเน็นทั้ง 6 สาย พร้อม % การใช้งานข้ามสาย
+        </small>
+    </div>
+    <a href="{{ url_for('characters.nen_guide') }}"
+       class="btn btn-primary btn-sm px-3 ms-3 text-nowrap">
+        ดูคู่มือ →
+    </a>
+</div>
+
 <form method="GET" class="row g-2 mb-4">
     <div class="col-md-6">
         <input type="text" name="search" value="{{ search }}"

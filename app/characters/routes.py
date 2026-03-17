@@ -126,3 +126,101 @@ def delete(id):
     db.session.commit()
     flash(f'ลบ {char.name} แล้วครับ', 'warning')
     return redirect(url_for('characters.index'))
+
+# -------------------- NEN GUIDE --------------------
+@characters.route('/nen-guide')
+@login_required
+def nen_guide():
+    NEN_INFO = [
+        {
+            'en': 'Enhancement',
+            'th': 'สายเสริมพลัง',
+            'color': '#4caf50',
+            'icon': 'enhancement.png',
+            'desc': 'เพิ่มความสามารถทางกายภาพของตัวเองหรือสิ่งของ แข็งแกร่งที่สุดในการต่อสู้ตรงๆ',
+            'usage': {
+                'Enhancement': 100,
+                'Transmutation': 80,
+                'Emission': 60,
+                'Conjuration': 40,
+                'Manipulation': 40,
+                'Specialization': 20,
+            }
+        },
+        {
+            'en': 'Emission',
+            'th': 'สายแผ่พุ่ง',
+            'color': '#1e90ff',
+            'icon': 'emission.png',
+            'desc': 'ปล่อยออร่าออกจากร่างกาย โจมตีได้จากระยะไกล',
+            'usage': {
+                'Enhancement': 60,
+                'Transmutation': 40,
+                'Emission': 100,
+                'Conjuration': 40,
+                'Manipulation': 60,
+                'Specialization': 20,
+            }
+        },
+        {
+            'en': 'Transmutation',
+            'th': 'สายเปลี่ยนแปลง',
+            'color': '#ffc107',
+            'icon': 'transmutation.png',
+            'desc': 'เปลี่ยนคุณสมบัติของออร่าให้เป็นสิ่งอื่น เช่น ไฟ ไฟฟ้า ยาง',
+            'usage': {
+                'Enhancement': 80,
+                'Transmutation': 100,
+                'Emission': 40,
+                'Conjuration': 40,
+                'Manipulation': 20,
+                'Specialization': 20,
+            }
+        },
+        {
+            'en': 'Conjuration',
+            'th': 'สายแปรสภาพ',
+            'color': '#ab47bc',
+            'icon': 'conjuration.png',
+            'desc': 'สร้างวัตถุจริงจากออร่า สิ่งที่สร้างจะคงอยู่แม้ไม่ใช้ออร่า',
+            'usage': {
+                'Enhancement': 40,
+                'Transmutation': 40,
+                'Emission': 40,
+                'Conjuration': 100,
+                'Manipulation': 60,
+                'Specialization': 20,
+            }
+        },
+        {
+            'en': 'Manipulation',
+            'th': 'สายควบคุม',
+            'color': '#ff8c42',
+            'icon': 'manipulation.png',
+            'desc': 'ควบคุมสิ่งมีชีวิตหรือวัตถุด้วยออร่า',
+            'usage': {
+                'Enhancement': 40,
+                'Transmutation': 20,
+                'Emission': 60,
+                'Conjuration': 60,
+                'Manipulation': 100,
+                'Specialization': 20,
+            }
+        },
+        {
+            'en': 'Specialization',
+            'th': 'สายพิเศษ',
+            'color': '#ef5350',
+            'icon': 'specialization.png',
+            'desc': 'ความสามารถที่ไม่จัดอยู่ในหมวดใด เป็นสายที่หายากและทรงพลังที่สุด',
+            'usage': {
+                'Enhancement': 20,
+                'Transmutation': 20,
+                'Emission': 20,
+                'Conjuration': 20,
+                'Manipulation': 20,
+                'Specialization': 100,
+            }
+        },
+    ]
+    return render_template('characters/nen_guide.html', nen_info=NEN_INFO)

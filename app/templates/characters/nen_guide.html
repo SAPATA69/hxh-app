@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% block title %}Nen Guide{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-2">
+    <h2 class="page-title mb-0">⚡ คู่มือสายเน็น</h2>
+    <a href="{{ url_for('characters.index') }}" class="btn btn-outline-secondary btn-sm">
+        ← กลับ
+    </a>
+</div>
+<p style="color:var(--text-muted);" class="mb-4">
+    เน็นแต่ละสายสามารถใช้สายอื่นได้ในระดับที่แตกต่างกัน
+    ยิ่งห่างจากสายหลักมากเท่าไหร่ ก็ใช้ได้น้อยลงเท่านั้น
+</p>
+
+<!-- รูป Chart หลัก -->
+<div class="card p-3 mb-5 text-center">
+    <p class="mb-2" style="color:var(--text-muted); font-size:.85rem;">แผนภูมิความสามารถใช้เน็นข้ามสาย</p>
+    <img src="{{ url_for('static', filename='img/nen/nen_chart.png') }}"
+         class="img-fluid mx-auto"
+         style="max-height:450px; border-radius:10px;"
+         alt="Nen Chart"
+         onerror="this.style.display='none'">
+</div>
+
+<!-- การ์ดแต่ละสาย -->
+<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+    {% for nen in nen_info %}
+    <div class="col">
+        <div class="card h-100 p-3">
+
+            <!-- หัว: รูป + ชื่อสาย -->
+            <div class="d-flex align-items-center gap-3 mb-3">
+                <img src="{{ url_for('static', filename='img/nen/' ~ nen.icon) }}"
+                     style="width:56px; height:56px; object-fit:contain; border-radius:8px;
+                            background:#0a1525; padding:6px;"
+                     onerror="this.style.display='none'">
+                <div>
+                    <h5 class="mb-0 fw-bold" style="color:{{ nen.color }};">
+                        {{ nen.th }}
+                    </h5>
+                    <small style="color:var(--text-muted);">{{ nen.en }}</small>
+                </div>
+            </div>
+
+            <!-- คำอธิบาย -->
+            <p class="small mb-3" style="color:var(--text-muted);">{{ nen.desc }}</p>
+
+            <!-- % bars -->
+            <div class="mt-auto">
+                <p class="mb-2" style="color:var(--text-muted); font-size:.8rem;">
+                    อัตราการใช้สายเน็นอื่น:
+                </p>
+                {% for type, pct in nen.usage.items() %}
+                <div class="mb-2">
+                    <div class="d-flex justify-content-between mb-1">
+                        <small style="color:var(--text-muted); font-size:.75rem;">{{ type }}</small>
+                        <small style="color:{{ nen.color }}; font-weight:600; font-size:.75rem;">
+                            {{ pct }}%
+                        </small>
+                    </div>
+                    <div style="background:#0a1525; border-radius:4px; height:6px; overflow:hidden;">
+                        <div style="width:{{ pct }}%; height:100%;
+                                    background:{{ nen.color }};
+                                    border-radius:4px;
+                                    box-shadow:0 0 6px {{ nen.color }}88;
+                                    transition:width .5s ease;">
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
