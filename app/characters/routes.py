@@ -15,6 +15,15 @@ NEN_TYPES = [
     ('Manipulation',   'สายควบคุม'),
     ('Specialization', 'สายพิเศษ'),
 ]
+NEN_USAGE = {
+    'Enhancement':    {'สายเสริมพลัง (Enhancement)': 100, 'สายเปลี่ยนแปลง (Transmutation)': 80, 'สายแผ่พุ่ง (Emission)': 80, 'สายแปรสภาพ (Conjuration)': 60, 'สายควบคุม (Manipulation)': 60, 'สายพิเศษ (Specialization)': 0},
+    'Transmutation':  {'สายเปลี่ยนแปลง (Transmutation)': 100, 'สายเสริมพลัง (Enhancement)': 80, 'สายแปรสภาพ (Conjuration)': 80, 'สายแผ่พุ่ง (Emission)': 60, 'สายควบคุม (Manipulation)': 40, 'สายพิเศษ (Specialization)': 0},
+    'Conjuration':    {'สายแปรสภาพ (Conjuration)': 100, 'สายเปลี่ยนแปลง (Transmutation)': 80, 'สายควบคุม (Manipulation)': 60, 'สายเสริมพลัง (Enhancement)': 60, 'สายแผ่พุ่ง (Emission)': 40, 'สายพิเศษ (Specialization)': 0},
+    'Specialization': {'สายพิเศษ (Specialization)': 100, 'สายเสริมพลัง (Enhancement)': 60, 'สายเปลี่ยนแปลง (Transmutation)': 60, 'สายแปรสภาพ (Conjuration)': 60, 'สายควบคุม (Manipulation)': 60, 'สายแผ่พุ่ง (Emission)': 60},
+    'Manipulation':   {'สายควบคุม (Manipulation)': 100, 'สายแผ่พุ่ง (Emission)': 80, 'สายแปรสภาพ (Conjuration)': 60, 'สายเสริมพลัง (Enhancement)': 60, 'สายเปลี่ยนแปลง (Transmutation)': 40, 'สายพิเศษ (Specialization)': 0},
+    'Emission':       {'สายแผ่พุ่ง (Emission)': 100, 'สายควบคุม (Manipulation)': 80, 'สายเสริมพลัง (Enhancement)': 80, 'สายเปลี่ยนแปลง (Transmutation)': 60, 'สายแปรสภาพ (Conjuration)': 40, 'สายพิเศษ (Specialization)': 0},
+}
+return render_template('characters/add.html', nen_types=NEN_TYPES, nen_usage=NEN_USAGE)
 
 def save_image(file, max_size_kb=500, max_dimension=1024):
     """บีบอัดรูปก่อนแปลงเป็น base64 — รับได้ทุกขนาด ผลลัพธ์ไม่เกิน max_size_kb"""
@@ -131,94 +140,73 @@ def delete(id):
 def nen_guide():
     NEN_INFO = [
         {
-            'en': 'Enhancement',
-            'th': 'สายเสริมพลัง',
-            'color': '#4caf50',
-            'icon': 'enhancement.png',
-            'desc': 'เพิ่มความสามารถทางกายภาพของตัวเองหรือสิ่งของ แข็งแกร่งที่สุดในการต่อสู้ตรงๆ',
-            'usage': {
-                'Enhancement': 100,
-                'Transmutation': 80,
-                'Emission': 60,
-                'Conjuration': 40,
-                'Manipulation': 40,
-                'Specialization': 20,
-            }
+            'en': 'Enhancement', 'th': 'สายเสริมพลัง',
+            'color': '#4caf50', 'icon': 'enhancement.png',
+            'desc': 'เพิ่มความสามารถทางกายภาพของตัวเองหรือสิ่งของ แข็งแกร่งที่สุดในการต่อสู้ตรงๆ เป็นสายที่พบบ่อยที่สุด (27% ของผู้ใช้เน็น)',
+            'usage': NEN_USAGE['Enhancement']
         },
         {
-            'en': 'Emission',
-            'th': 'สายแผ่พุ่ง',
-            'color': '#1e90ff',
-            'icon': 'emission.png',
-            'desc': 'ปล่อยออร่าออกจากร่างกาย โจมตีได้จากระยะไกล',
-            'usage': {
-                'Enhancement': 60,
-                'Transmutation': 40,
-                'Emission': 100,
-                'Conjuration': 40,
-                'Manipulation': 60,
-                'Specialization': 20,
-            }
+            'en': 'Emission', 'th': 'สายแผ่พุ่ง',
+            'color': '#1e90ff', 'icon': 'emission.png',
+            'desc': 'ปล่อยออร่าออกจากร่างกาย โจมตีได้จากระยะไกล เป็นสายที่พบบ่อยเป็นอันดับสอง (24%)',
+            'usage': NEN_USAGE['Emission']
         },
         {
-            'en': 'Transmutation',
-            'th': 'สายเปลี่ยนแปลง',
-            'color': '#ffc107',
-            'icon': 'transmutation.png',
-            'desc': 'เปลี่ยนคุณสมบัติของออร่าให้เป็นสิ่งอื่น เช่น ไฟ ไฟฟ้า ยาง',
-            'usage': {
-                'Enhancement': 80,
-                'Transmutation': 100,
-                'Emission': 40,
-                'Conjuration': 40,
-                'Manipulation': 20,
-                'Specialization': 20,
-            }
+            'en': 'Transmutation', 'th': 'สายเปลี่ยนแปลง',
+            'color': '#ffc107', 'icon': 'transmutation.png',
+            'desc': 'เปลี่ยนคุณสมบัติของออร่าให้เป็นสิ่งอื่น เช่น ไฟฟ้า ยาง ไม่ได้สร้างวัตถุจริง แต่เลียนแบบคุณสมบัติ (19%)',
+            'usage': NEN_USAGE['Transmutation']
         },
         {
-            'en': 'Conjuration',
-            'th': 'สายแปรสภาพ',
-            'color': '#ab47bc',
-            'icon': 'conjuration.png',
-            'desc': 'สร้างวัตถุจริงจากออร่า สิ่งที่สร้างจะคงอยู่แม้ไม่ใช้ออร่า',
-            'usage': {
-                'Enhancement': 40,
-                'Transmutation': 40,
-                'Emission': 40,
-                'Conjuration': 100,
-                'Manipulation': 60,
-                'Specialization': 20,
-            }
+            'en': 'Conjuration', 'th': 'สายแปรสภาพ',
+            'color': '#ab47bc', 'icon': 'conjuration.png',
+            'desc': 'สร้างวัตถุจริงจากออร่า สิ่งที่สร้างคงอยู่ได้แม้ไม่ใช้ออร่า การตั้งเงื่อนไขจะทำให้พลังแกร่งขึ้น (15%)',
+            'usage': NEN_USAGE['Conjuration']
         },
         {
-            'en': 'Manipulation',
-            'th': 'สายควบคุม',
-            'color': '#ff8c42',
-            'icon': 'manipulation.png',
-            'desc': 'ควบคุมสิ่งมีชีวิตหรือวัตถุด้วยออร่า',
-            'usage': {
-                'Enhancement': 40,
-                'Transmutation': 20,
-                'Emission': 60,
-                'Conjuration': 60,
-                'Manipulation': 100,
-                'Specialization': 20,
-            }
+            'en': 'Manipulation', 'th': 'สายควบคุม',
+            'color': '#ff8c42', 'icon': 'manipulation.png',
+            'desc': 'ควบคุมสิ่งมีชีวิตหรือวัตถุด้วยออร่า เงื่อนไขที่ยากกว่าจะให้การควบคุมที่ดีกว่า (15%)',
+            'usage': NEN_USAGE['Manipulation']
         },
         {
-            'en': 'Specialization',
-            'th': 'สายพิเศษ',
-            'color': '#ef5350',
-            'icon': 'specialization.png',
-            'desc': 'ความสามารถที่ไม่จัดอยู่ในหมวดใด เป็นสายที่หายากและทรงพลังที่สุด',
-            'usage': {
-                'Enhancement': 20,
-                'Transmutation': 20,
-                'Emission': 20,
-                'Conjuration': 20,
-                'Manipulation': 20,
-                'Specialization': 100,
-            }
+            'en': 'Specialization', 'th': 'สายพิเศษ',
+            'color': '#ef5350', 'icon': 'specialization.png',
+            'desc': 'ความสามารถนอกหมวดหมู่ เป็นสายที่หายากที่สุด (0.033%) มักเปลี่ยนมาจาก Conjuration หรือ Manipulation',
+            'usage': NEN_USAGE['Specialization']
         },
     ]
-    return render_template('characters/nen_guide.html', nen_info=NEN_INFO)
+
+    NEN_TECHNIQUES = [
+        {
+            'category': '🔰 วิชาพื้นฐาน (Basic Techniques)',
+            'techniques': [
+                {'name': 'เท็น (Ten - 纏)', 'desc': 'ห่อหุ้มออร่ารอบร่างกาย ป้องกันการสูญเสียออร่าและชะลอการแก่ชรา พื้นฐานของทุกวิชา'},
+                {'name': 'เร็น (Ren - 錬)', 'desc': 'เพิ่มปริมาณออร่าในร่างกายให้มากกว่าปกติ เสริมพลังโจมตีและป้องกัน แต่ใช้ออร่าเร็วกว่า Ten'},
+                {'name': 'เซ็ตสึ (Zetsu - 絶)', 'desc': 'หยุดการไหลของออร่าทั้งหมด ซ่อนพลังเน็น ช่วยฟื้นฟูร่างกาย แต่เสี่ยงต่อการโจมตีจากผู้ใช้เน็น'},
+                {'name': 'ฮัตสึ (Hatsu - 発)', 'desc': 'ปล่อยออร่าในแบบเฉพาะตัวของผู้ใช้ คือความสามารถพิเศษส่วนตัวที่สะท้อนบุคลิกและสายเน็น'},
+            ]
+        },
+        {
+            'category': '⚡ วิชาขั้นสูง (Advanced Techniques)',
+            'techniques': [
+                {'name': 'เกียว (Gyo - 凝)', 'desc': 'รวมออร่า 100% ไปที่จุดเดียว มักใช้กับดวงตาเพื่อมองเห็นออร่าที่ซ่อนอยู่ (In)'},
+                {'name': 'อิน (In - 隱)', 'desc': 'ซ่อนออร่าให้มองไม่เห็นแม้ใช้ Gyo ขั้นสูงมาก ใช้สำหรับซุ่มโจมตีหรือสอดแนม'},
+                {'name': 'เค็น (Ken - 堅)', 'desc': 'คง Ren ตลอดทั่วร่างกายสำหรับป้องกันระยะยาว สมดุลระหว่าง Ren และ Ten ป้องกันได้ทั้งตัว'},
+                {'name': 'โค (Ko - 硬)', 'desc': 'รวมออร่าทั้งหมดไปจุดเดียว พลังโจมตี/ป้องกันสูงสุด แต่ส่วนที่เหลือไม่มีการป้องกัน'},
+                {'name': 'ริว (Ryu - 流)', 'desc': 'แจกจ่ายออร่าแบบ Real-time ระหว่างส่วนต่างๆ ของร่างกาย ต้องอาศัยทักษะและประสบการณ์สูง'},
+                {'name': 'ชู (Shu - 周)', 'desc': 'ขยายออร่าไปครอบวัตถุที่ถืออยู่ ทำให้วัตถุแข็งแกร่งและได้รับการป้องกันเสมือนร่างกาย'},
+                {'name': 'เอ็น (En - 円)', 'desc': 'ขยาย Ten ออกไปรอบๆ ร่างกายในรัศมีกว้าง รับรู้ทุกสิ่งในรัศมีนั้น ต้องใช้ออร่ามาก'},
+                {'name': 'ชุน (Shun - 瞬)', 'desc': 'ใช้ Ten ขณะเคลื่อนที่เร็ว ออร่าจะห่อหุ้มร่างกายขณะวิ่ง ลดความต้านทานและป้องกันได้ขณะเคลื่อนไหว'},
+            ]
+        },
+        {
+            'category': '🔒 หลักการเสริมพลัง (Vow & Limitation)',
+            'techniques': [
+                {'name': 'การปฏิญาณ (Vow)', 'desc': 'การตั้งคำมั่นสัญญากับตัวเองเพื่อเพิ่มพลัง ยิ่งเงื่อนไขยากหรืออันตราย ยิ่งเพิ่มพลังมาก'},
+                {'name': 'การจำกัด (Limitation)', 'desc': 'ตั้งขีดจำกัดการใช้ความสามารถ เช่น ใช้ได้เฉพาะกับศัตรูบางประเภท จะทำให้พลังโดยรวมสูงขึ้น'},
+            ]
+        }
+    ]
+
+    return render_template('characters/nen_guide.html', nen_info=NEN_INFO, nen_techniques=NEN_TECHNIQUES)
