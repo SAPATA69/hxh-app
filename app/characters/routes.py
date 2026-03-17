@@ -46,7 +46,6 @@ def save_image(file, max_size_kb=500, max_dimension=1024):
 
 # -------------------- INDEX --------------------
 @characters.route('/')
-@login_required
 def index():
     search = request.args.get('search', '')
     nen_filter = request.args.get('nen_type', '')
@@ -129,7 +128,6 @@ def delete(id):
 
 # -------------------- NEN GUIDE --------------------
 @characters.route('/nen-guide')
-@login_required
 def nen_guide():
     NEN_INFO = [
         {

@@ -190,36 +190,40 @@
         </button>
         <div class="collapse navbar-collapse" id="navMenu">
             <ul class="navbar-nav ms-auto align-items-center gap-1">
-                {% if current_user.is_authenticated %}
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ url_for('auth.admin_users') }}">👥 สมาชิก</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ url_for('characters.nen_guide') }}">📖 คู่มือเน็น</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ url_for('characters.index') }}">หน้าหลัก</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ url_for('characters.add') }}">➕ เพิ่มตัวละคร</a>
-                </li>
-                <li class="nav-item px-2">
-                    <span class="nav-link nav-user"> {{ current_user.username }}</span>
-                </li>
-                <li class="nav-item">
-                    <a class="btn btn-sm btn-outline-secondary px-3"
-                       href="{{ url_for('auth.logout') }}"> ออก</a>
-                </li>
-                {% else %}
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ url_for('auth.login') }}"> เข้าสู่ระบบ</a>
-                </li>
-                <li class="nav-item">
-                    <a class="btn btn-primary btn-sm px-3"
-                       href="{{ url_for('auth.register') }}"> สมัครสมาชิก</a>
-                </li>
-                {% endif %}
-            </ul>
+                
+                <!-- เมนูที่ทุกคนเห็นได้ -->
+    <li class="nav-item">
+        <a class="nav-link" href="{{ url_for('characters.index') }}">🏠 หน้าหลัก</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="{{ url_for('characters.nen_guide') }}">📖 คู่มือเน็น</a>
+    </li>
+
+    {% if current_user.is_authenticated %}
+    <li class="nav-item">
+        <a class="nav-link" href="{{ url_for('characters.add') }}">➕ เพิ่มตัวละคร</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="{{ url_for('auth.admin_users') }}">👥 สมาชิก</a>
+    </li>
+    <li class="nav-item px-2">
+        <span class="nav-link nav-user">👤 {{ current_user.username }}</span>
+    </li>
+    <li class="nav-item">
+        <a class="btn btn-sm btn-outline-secondary px-3"
+           href="{{ url_for('auth.logout') }}">🚪 ออก</a>
+    </li>
+    {% else %}
+    <li class="nav-item">
+        <a class="nav-link" href="{{ url_for('auth.login') }}">🔑 เข้าสู่ระบบ</a>
+    </li>
+    <li class="nav-item">
+        <a class="btn btn-primary btn-sm px-3"
+           href="{{ url_for('auth.register') }}">📝 สมัครสมาชิก</a>
+    </li>
+    {% endif %}
+
+         </ul>
         </div>
     </div>
 </nav>

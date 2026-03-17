@@ -3,8 +3,14 @@
 
 {% block content %}
 <div class="d-flex justify-content-between align-items-center mb-4">
-    <h3 class="page-title mb-0"> HxH Characters</h3>
+    <h3 class="page-title mb-0">⚡ HxH Characters</h3>
+    {% if current_user.is_authenticated %}
     <a href="{{ url_for('characters.add') }}" class="btn btn-primary px-4">➕ เพิ่มตัวละคร</a>
+    {% else %}
+    <a href="{{ url_for('auth.login') }}" class="btn btn-outline-secondary px-4">
+        🔑 เข้าสู่ระบบเพื่อจัดการข้อมูล
+    </a>
+    {% endif %}
 </div>
 
 <!-- Nen Guide Banner -->
@@ -22,10 +28,25 @@
     </a>
 </div>
 
+<!-- Login Banner (แสดงเฉพาะคนที่ยังไม่ login) -->
+{% if not current_user.is_authenticated %}
+<div class="alert d-flex align-items-center gap-3 mb-4"
+     style="background:#0a1a30; border:1px solid #1e90ff44; border-radius:10px;">
+    <span style="font-size:1.5rem;">🔒</span>
+    <div>
+        <strong style="color:#7ec8ff;">อยากเพิ่มหรือแก้ไขตัวละคร?</strong>
+        <span style="color:var(--text-muted);"> กรุณา </span>
+        <a href="{{ url_for('auth.login') }}" style="color:var(--blue-primary);">เข้าสู่ระบบ</a>
+        <span style="color:var(--text-muted);"> หรือ </span>
+        <a href="{{ url_for('auth.register') }}" style="color:var(--blue-primary);">สมัครสมาชิก</a>
+    </div>
+</div>
+{% endif %}
+
 <form method="GET" class="row g-2 mb-4">
     <div class="col-md-6">
         <input type="text" name="search" value="{{ search }}"
-               class="form-control" placeholder=" ค้นหาชื่อตัวละคร...">
+               class="form-control" placeholder="🔍 ค้นหาชื่อตัวละคร...">
     </div>
     <div class="col-md-4">
         <select name="nen_type" class="form-select">
@@ -57,7 +78,7 @@
                 <div class="text-center mb-3"
                      style="height:100px; background:#0a1525; border-radius:8px;
                             display:flex; align-items:center; justify-content:center;">
-                    <span style="font-size:3rem; opacity:.3;"></span>
+                    <span style="font-size:3rem; opacity:.3;">👤</span>
                 </div>
                 {% endif %}
                 <h5 class="fw-bold mb-2" style="color:#7ec8ff;">{{ char.name }}</h5>
@@ -65,7 +86,7 @@
                     {{ char.nen_type_th }} · {{ char.nen_type_en }}
                 </span>
                 {% if char.ability %}
-                <p class="small mb-1" style="color:#ffc107;"> {{ char.ability }}</p>
+                <p class="small mb-1" style="color:#ffc107;">⚔️ {{ char.ability }}</p>
                 {% endif %}
                 {% if char.description %}
                 <p class="small mb-0" style="color:var(--text-muted);">
@@ -73,22 +94,30 @@
                 </p>
                 {% endif %}
             </div>
+
+            <!-- ปุ่มแก้ไข/ลบ แสดงเฉพาะ login แล้ว -->
+            {% if current_user.is_authenticated %}
             <div class="card-footer d-flex gap-2 justify-content-end">
                 <a href="{{ url_for('characters.edit', id=char.id) }}"
-                   class="btn btn-sm btn-outline-warning"> แก้ไข</a>
+                   class="btn btn-sm btn-outline-warning">✏️ แก้ไข</a>
                 <form method="POST" action="{{ url_for('characters.delete', id=char.id) }}"
                       onsubmit="return confirm('ลบ {{ char.name }} จริงๆ เหรอครับ?')">
-                    <button type="submit" class="btn btn-sm btn-outline-danger"> ลบ</button>
+                    <button type="submit" class="btn btn-sm btn-outline-danger">🗑️ ลบ</button>
                 </form>
             </div>
+            {% endif %}
+
         </div>
     </div>
     {% endfor %}
 </div>
 {% else %}
 <div class="text-center py-5" style="color:var(--text-muted);">
+    <div style="font-size:4rem; opacity:.3;">👤</div>
     <p class="mt-3">ยังไม่มีตัวละครในระบบครับ</p>
+    {% if current_user.is_authenticated %}
     <a href="{{ url_for('characters.add') }}" class="btn btn-primary mt-2">➕ เพิ่มตัวละครแรก</a>
+    {% endif %}
 </div>
 {% endif %}
 {% endblock %}
