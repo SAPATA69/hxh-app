@@ -4,7 +4,7 @@
 {% block content %}
 <div class="row justify-content-center">
     <div class="col-md-7">
-        <h3 class="page-title mb-4">✏️ แก้ไข: {{ character.name }}</h3>
+        <h3 class="page-title mb-4"> แก้ไข: {{ character.name }}</h3>
         <div class="card p-4">
             <form method="POST" enctype="multipart/form-data">
 
@@ -51,7 +51,7 @@
 
                 <!-- Main Image -->
                 <div class="mb-3">
-                    <label class="form-label">🖼️ รูปหลักของตัวละคร</label>
+                    <label class="form-label"> รูปหลักของตัวละคร</label>
                     {% if character.image %}
                     <div class="mb-2 text-center">
                         <p style="color:var(--text-muted); font-size:.85rem;">รูปปัจจุบัน:</p>
@@ -71,7 +71,7 @@
 
                 <!-- Gallery -->
                 <div class="mb-4">
-                    <label class="form-label">🗂️ แกลเลอรี่รูปภาพ
+                    <label class="form-label"> แกลเลอรี่รูปภาพ
                         <span style="color:var(--text-muted); font-weight:400;">(สูงสุด 5 รูป)</span>
                     </label>
 
@@ -113,14 +113,14 @@
                 </div>
 
                 <div class="mb-4">
-                    <label class="form-label">📜 ประวัติและรายละเอียด</label>
+                    <label class="form-label"> ประวัติและรายละเอียด</label>
                     <textarea name="biography" rows="12" class="form-control"
                               placeholder="เขียนประวัติตัวละครแบบยาวๆ ได้เลยครับ...">{{ character.biography or '' }}</textarea>
                     <small style="color:var(--text-muted);">รองรับการขึ้นบรรทัดใหม่</small>
                 </div>
 
                 <div class="d-flex gap-2">
-                    <button type="submit" class="btn btn-primary flex-fill py-2">💾 บันทึก</button>
+                    <button type="submit" class="btn btn-primary flex-fill py-2"> บันทึก</button>
                     <a href="{{ url_for('characters.detail', id=character.id) }}"
                        class="btn btn-outline-secondary flex-fill py-2">ยกเลิก</a>
                 </div>

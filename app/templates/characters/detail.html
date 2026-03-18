@@ -254,7 +254,7 @@
   </a>
   {% if current_user.is_authenticated %}
   <a href="{{ url_for('characters.edit', id=character.id) }}" class="btn btn-outline-warning">
-    ✏️ แก้ไขตัวละคร
+     แก้ไขตัวละคร
   </a>
   <form method="POST" action="{{ url_for('characters.delete', id=character.id) }}"
         onsubmit="return confirm('ลบ {{ character.name }} จริงๆ เหรอครับ?')"
@@ -294,7 +294,7 @@
       <!-- Nen Usage Bars -->
       {% if nen_usage %}
       <div class="nen-usage-mini">
-        <p>⚡ อัตราการใช้สายเน็นอื่น:</p>
+        <p> อัตราการใช้สายเน็นอื่น:</p>
         {% for type_name, pct in nen_usage.items() %}
         <div class="mb-2">
           <div class="d-flex justify-content-between mb-1">
@@ -316,7 +316,7 @@
 <!-- ── Gallery Carousel ── -->
 {% if gallery %}
 <div class="gallery-section">
-  <h4>🖼️ แกลเลอรี่รูปภาพ</h4>
+  <h4> แกลเลอรี่รูปภาพ</h4>
 
   <div id="nenCarousel" class="nen-carousel carousel slide" data-bs-ride="false">
     <!-- Counter -->
@@ -375,7 +375,7 @@
 
 <!-- ── Biography Section ── -->
 <div class="bio-section">
-  <h4>📜 ประวัติและรายละเอียด</h4>
+  <h4> ประวัติและรายละเอียด</h4>
   {% if character.biography %}
   <div class="bio-content">{{ character.biography }}</div>
   {% else %}
