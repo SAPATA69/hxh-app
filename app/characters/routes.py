@@ -26,6 +26,29 @@ NEN_USAGE = {
     'Emission':       {'สายแผ่พุ่ง (Emission)': 100, 'สายควบคุม (Manipulation)': 80, 'สายเสริมพลัง (Enhancement)': 80, 'สายเปลี่ยนแปลง (Transmutation)': 60, 'สายแปรสภาพ (Conjuration)': 40, 'สายพิเศษ (Specialization)': 0},
 }
 
+NEN_TECHNIQUES = [
+    {
+        'category': '🔰 วิชาพื้นฐาน (Basic Techniques)',
+        'techniques': [
+            {'name': 'เท็น (Ten - 纏)', 'desc': 'ห่อหุ้มออร่ารอบร่างกาย ป้องกันการสูญเสียออร่าและชะลอการเสื่อมของร่างกาย'},
+            {'name': 'เซทสึ (Zetsu - 絶)', 'desc': 'หยุดการไหลของออร่าทั้งหมด ซ่อนการมีอยู่ แต่ไม่มีการป้องกัน'},
+            {'name': 'เรน (Ren - 錬)', 'desc': 'เพิ่มปริมาณและความเข้มข้นของออร่า เพิ่มพลังโจมตีและความทนทาน'},
+            {'name': 'ฮัทสึ (Hatsu - 発)', 'desc': 'ปล่อยออร่าออกจากร่างกายในรูปแบบที่ต้องการ เป็นพื้นฐานของทุกความสามารถเน็น'},
+        ]
+    },
+    {
+        'category': '⚔️ วิชาขั้นสูง (Advanced Techniques)',
+        'techniques': [
+            {'name': 'เคน (Ken - 堅)', 'desc': 'รักษาสถานะเรนในระหว่างการต่อสู้ ป้องกันร่างกายทั้งหมดด้วยออร่า'},
+            {'name': 'โกะ (Ko - 硬)', 'desc': 'รวบรวมออร่าทั้งหมดไปยังจุดเดียว เพิ่มพลังโจมตีสูงสุดแต่ไม่มีการป้องกัน'},
+            {'name': 'ชิ (Shu - 周)', 'desc': 'ขยายออร่าไปคลุมวัตถุ เสมือนวัตถุนั้นกลายเป็นส่วนหนึ่งของร่างกาย'},
+            {'name': 'อิน (In - 隠)', 'desc': 'ซ่อนออร่าให้มองไม่เห็น แม้แต่ผู้ที่เชี่ยวชาญเน็นก็ตรวจจับได้ยาก'},
+            {'name': 'เอ็น (En - 円)', 'desc': 'ขยาย Ten ออกไปรอบๆ รับรู้ทุกสิ่งในรัศมี ต้องใช้ออร่ามาก'},
+            {'name': 'กยู (Gyo - 凝)', 'desc': 'รวมออร่าไปที่ดวงตา เพื่อมองเห็นออร่าที่ซ่อนอยู่หรือสิ่งที่มองไม่เห็น'},
+        ]
+    },
+]
+
 
 def save_image(file, max_size_kb=500, max_dimension=1024):
     if not file or file.filename == '':
@@ -218,7 +241,7 @@ def nen_guide():
     from ..models import NenTypeInfo
     nen_extras = {n.nen_type_en: n for n in NenTypeInfo.query.all()}
 
-    NEN_INFO = [
+    nen_info = [
         {'en': 'Enhancement', 'th': 'สายเสริมพลัง', 'color': '#4caf50', 'icon': 'enhancement.png',
          'desc': 'เพิ่มความสามารถทางกายภาพของตัวเองหรือสิ่งของ แข็งแกร่งที่สุดในการต่อสู้ตรงๆ (27%)',
          'usage': NEN_USAGE['Enhancement'], 'extra': nen_extras.get('Enhancement')},
@@ -239,8 +262,6 @@ def nen_guide():
          'usage': NEN_USAGE['Specialization'], 'extra': nen_extras.get('Specialization')},
     ]
 
-    NEN_TECHNIQUES = [
-        {
-            'category': '🔰 วิชาพื้นฐาน (Basic Techniques)',
-            'techniques': [
-                {'name': 'เท็น (Ten - 纏)', 'desc': 'ห่อหุ้มออร่ารอบร่างกาย ป้องกันการสูญเสียออร่าและชะลอก
+    return render_template('characters/nen_guide.html',
+                           nen_info=nen_info,
+                           nen_techniques=NEN_TECHNIQUES)
