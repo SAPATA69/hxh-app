@@ -72,4 +72,4 @@ def create_app():
             """))
             conn.commit()
             
-            return app
+    return app
