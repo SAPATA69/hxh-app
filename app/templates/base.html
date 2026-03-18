@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="th">
+<html lang="th" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,16 +7,72 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
+        /* ── Light Mode (default) ── */
         :root {
-            --blue-primary: #1e90ff;
-            --blue-dark:    #0a58ca;
-            --blue-glow:    #1e90ff55;
-            --bg-main:      #050914;
-            --bg-card:      #0d1b2e;
-            --bg-nav:       #080f1e;
-            --border-color: #1a3a5c;
-            --text-main:    #e0eaf8;
-            --text-muted:   #6b8caf;
+            --bg-main:      #f2f2f2;
+            --bg-card:      #ffffff;
+            --bg-nav:       #2d4a2d;
+            --bg-subnav:    #1e3a1e;
+            --bg-input:     #ffffff;
+            --border-color: #d0cfc8;
+            --text-main:    #1a1a1a;
+            --text-muted:   #666666;
+            --text-nav:     #d4e8d4;
+            --text-nav-brand: #ffffff;
+            --green-primary: #2d4a2d;
+            --green-accent:  #a5c8a5;
+            --green-light:   #e8f0e8;
+            --green-mid:     #4a7a4a;
+            --btn-primary-bg: #2d4a2d;
+            --btn-primary-text: #ffffff;
+            --card-header-bg: #2d4a2d;
+            --card-footer-bg: #f5f5f0;
+            --badge-bg:      #e8f0e8;
+            --badge-border:  #a5c8a5;
+            --title-color:   #2d4a2d;
+            --title-border:  #4a7a4a;
+            --alert-success-bg: #e8f0e8;
+            --alert-success-text: #2d4a2d;
+            --alert-danger-bg:  #fce8e8;
+            --alert-danger-text: #7a2d2d;
+            --alert-warning-bg: #f5f0e0;
+            --alert-warning-text: #7a5a1a;
+            --alert-info-bg:    #e0ecf5;
+            --alert-info-text:  #1a4a6a;
+        }
+
+        /* ── Dark Mode ── */
+        [data-theme="dark"] {
+            --bg-main:      #151515;
+            --bg-card:      #1e1e1e;
+            --bg-nav:       #2d4a2d;
+            --bg-subnav:    #1e3a1e;
+            --bg-input:     #222222;
+            --border-color: #333333;
+            --text-main:    #e0e0e0;
+            --text-muted:   #888888;
+            --text-nav:     #d4e8d4;
+            --text-nav-brand: #ffffff;
+            --green-primary: #a5c8a5;
+            --green-accent:  #a5c8a5;
+            --green-light:   #1a2e1a;
+            --green-mid:     #4a7a4a;
+            --btn-primary-bg: #2d4a2d;
+            --btn-primary-text: #d4e8d4;
+            --card-header-bg: #2d4a2d;
+            --card-footer-bg: #252525;
+            --badge-bg:      #1b3a1b;
+            --badge-border:  #4a7a4a;
+            --title-color:   #a5c8a5;
+            --title-border:  #4a7a4a;
+            --alert-success-bg: #1a2e1a;
+            --alert-success-text: #a5c8a5;
+            --alert-danger-bg:  #2e1a1a;
+            --alert-danger-text: #e07070;
+            --alert-warning-bg: #2e2a10;
+            --alert-warning-text: #c8aa60;
+            --alert-info-bg:    #1a2a3a;
+            --alert-info-text:  #70a8c8;
         }
 
         * { box-sizing: border-box; }
@@ -26,161 +82,208 @@
             background: var(--bg-main);
             color: var(--text-main);
             min-height: 100vh;
-        }
-
-        /* ── Animated BG ── */
-        body::before {
-            content: '';
-            position: fixed;
-            top: -50%; left: -50%;
-            width: 200%; height: 200%;
-            background: radial-gradient(ellipse at 20% 20%, #0a1a3a 0%, transparent 50%),
-                        radial-gradient(ellipse at 80% 80%, #001233 0%, transparent 50%);
-            z-index: -1;
-            animation: bgPulse 8s ease-in-out infinite alternate;
-        }
-        @keyframes bgPulse {
-            from { opacity: 0.6; }
-            to   { opacity: 1; }
+            transition: background .3s, color .3s;
         }
 
         /* ── Navbar ── */
         .navbar {
             background: var(--bg-nav) !important;
-            border-bottom: 1px solid var(--border-color);
-            box-shadow: 0 2px 20px #1e90ff22;
-            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--bg-subnav);
+            padding: 0 !important;
+        }
+        .navbar-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 16px;
+            width: 100%;
         }
         .navbar-brand {
-            color: var(--blue-primary) !important;
+            color: var(--text-nav-brand) !important;
             font-weight: 700;
-            font-size: 1.3rem;
-            letter-spacing: 1px;
-            text-shadow: 0 0 15px var(--blue-glow);
+            font-size: 1.2rem;
+            letter-spacing: .5px;
             display: flex;
             align-items: center;
             gap: 8px;
+            text-decoration: none;
         }
         .navbar-logo {
-            height: 38px;
+            height: 36px;
             width: auto;
             object-fit: contain;
-            filter: drop-shadow(0 0 8px #1e90ff66);
-            transition: filter .2s;
         }
-        .navbar-logo:hover {
-            filter: drop-shadow(0 0 14px #1e90ffaa);
+        .nav-link {
+            color: var(--text-nav) !important;
+            transition: color .2s;
+            font-size: .9rem;
         }
-        .nav-link { color: var(--text-muted) !important; transition: all .2s; }
-        .nav-link:hover {
-            color: var(--blue-primary) !important;
-            text-shadow: 0 0 8px var(--blue-glow);
-        }
+        .nav-link:hover { color: #ffffff !important; }
         .nav-user {
-            color: #7ec8ff !important;
+            color: #ffffff !important;
             font-weight: 600;
         }
+        .navbar-subnav {
+            background: var(--bg-subnav);
+            padding: 4px 16px;
+            font-size: .78rem;
+            color: #7aaa7a;
+            border-top: 1px solid #1a2e1a44;
+        }
+
+        /* ── Dark Mode Toggle ── */
+        .dark-toggle {
+            background: var(--bg-subnav);
+            border: 1px solid #4a7a4a66;
+            border-radius: 20px;
+            padding: 4px 12px;
+            cursor: pointer;
+            color: var(--text-nav);
+            font-size: .78rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: background .2s;
+            white-space: nowrap;
+        }
+        .dark-toggle:hover { background: #1a2e1a; }
 
         /* ── Cards ── */
         .card {
             background: var(--bg-card);
             border: 1px solid var(--border-color);
-            border-radius: 12px;
-            transition: transform .2s, box-shadow .2s;
+            border-radius: 6px;
+            transition: transform .2s, box-shadow .2s, background .3s;
         }
         .card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 30px #1e90ff22;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(45,74,45,.15);
+        }
+        .card-header-green {
+            background: var(--card-header-bg);
+            padding: 7px 12px;
+            border-radius: 6px 6px 0 0;
+        }
+        .card-header-green .card-char-name {
+            color: #ffffff;
+            font-size: .82rem;
+            font-weight: 600;
         }
         .card-footer {
-            background: transparent;
-            border-top: 1px solid var(--border-color);
+            background: var(--card-footer-bg) !important;
+            border-top: 1px solid var(--border-color) !important;
+            border-radius: 0 0 6px 6px;
+            transition: background .3s;
         }
 
         /* ── Buttons ── */
         .btn-primary {
-            background: linear-gradient(135deg, #1e90ff, #0a58ca);
+            background: var(--btn-primary-bg);
             border: none;
-            border-radius: 8px;
+            border-radius: 4px;
             font-weight: 600;
-            box-shadow: 0 4px 15px #1e90ff33;
+            color: var(--btn-primary-text);
             transition: all .2s;
         }
         .btn-primary:hover {
-            background: linear-gradient(135deg, #3aa0ff, #1e90ff);
-            box-shadow: 0 6px 20px #1e90ff55;
+            background: var(--green-mid);
+            color: #ffffff;
             transform: translateY(-1px);
         }
         .btn-outline-warning {
-            border-color: #ffc107;
-            color: #ffc107;
-            border-radius: 8px;
+            border-color: #a08040;
+            color: #a08040;
+            border-radius: 4px;
         }
-        .btn-outline-warning:hover { background: #ffc107; color: #000; }
+        .btn-outline-warning:hover { background: #a08040; color: #fff; }
         .btn-outline-danger {
-            border-color: #dc3545;
-            color: #dc3545;
-            border-radius: 8px;
+            border-color: #a04040;
+            color: #a04040;
+            border-radius: 4px;
         }
-        .btn-outline-danger:hover { background: #dc3545; color: #fff; }
+        .btn-outline-danger:hover { background: #a04040; color: #fff; }
         .btn-outline-secondary {
             border-color: var(--border-color);
             color: var(--text-muted);
-            border-radius: 8px;
+            border-radius: 4px;
+        }
+        .btn-outline-secondary:hover {
+            background: var(--green-light);
+            color: var(--green-primary);
+            border-color: var(--green-mid);
         }
 
         /* ── Form Controls ── */
         .form-control, .form-select {
-            background: #081525 !important;
+            background: var(--bg-input) !important;
             border: 1px solid var(--border-color) !important;
             color: var(--text-main) !important;
-            border-radius: 8px;
-            transition: border-color .2s, box-shadow .2s;
+            border-radius: 4px;
+            transition: border-color .2s, box-shadow .2s, background .3s;
         }
         .form-control:focus, .form-select:focus {
-            border-color: var(--blue-primary) !important;
-            box-shadow: 0 0 0 3px #1e90ff22 !important;
-            background: #0a1a30 !important;
+            border-color: var(--green-mid) !important;
+            box-shadow: 0 0 0 3px rgba(45,74,45,.15) !important;
         }
-        .form-label { color: var(--text-muted); font-size: .9rem; }
+        .form-label { color: var(--text-muted); font-size: .88rem; }
 
         /* ── Badges ── */
         .nen-badge {
             display: inline-block;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: .78rem;
+            padding: 3px 10px;
+            border-radius: 3px;
+            font-size: .75rem;
             font-weight: 600;
-            letter-spacing: .5px;
+            letter-spacing: .3px;
         }
-        .nen-enhancement    { background:#1a3d1a; color:#4caf50; border:1px solid #4caf5066; }
-        .nen-emission       { background:#1a1a3d; color:#1e90ff; border:1px solid #1e90ff66; }
-        .nen-transmutation  { background:#3d3d1a; color:#ffc107; border:1px solid #ffc10766; }
-        .nen-conjuration    { background:#2d1a3d; color:#ab47bc; border:1px solid #ab47bc66; }
-        .nen-manipulation   { background:#3d2a1a; color:#ff8c42; border:1px solid #ff8c4266; }
-        .nen-specialization { background:#3d1a1a; color:#ef5350; border:1px solid #ef535066; }
+        .nen-enhancement    { background:#e8f0e8; color:#2d4a2d; border:1px solid #a5c8a5; }
+        .nen-emission       { background:#e0ecf5; color:#1a4a6a; border:1px solid #7aaac8; }
+        .nen-transmutation  { background:#f5f0e0; color:#7a5a1a; border:1px solid #c8aa60; }
+        .nen-conjuration    { background:#f0e8f5; color:#5a2d7a; border:1px solid #b87ac8; }
+        .nen-manipulation   { background:#f5ece0; color:#7a4a1a; border:1px solid #c89060; }
+        .nen-specialization { background:#f5e0e0; color:#7a2d2d; border:1px solid #c87a7a; }
 
-        /* ── Divider Glow ── */
+        [data-theme="dark"] .nen-enhancement    { background:#1b3a1b; color:#a5c8a5; border-color:#4a7a4a; }
+        [data-theme="dark"] .nen-emission       { background:#1a2a3a; color:#70a8c8; border-color:#2a5a7a; }
+        [data-theme="dark"] .nen-transmutation  { background:#2a2410; color:#c8aa60; border-color:#6a5a20; }
+        [data-theme="dark"] .nen-conjuration    { background:#2a1a3a; color:#b87ac8; border-color:#5a2a7a; }
+        [data-theme="dark"] .nen-manipulation   { background:#2e1e0e; color:#c89060; border-color:#7a4a20; }
+        [data-theme="dark"] .nen-specialization { background:#2e1a1a; color:#e07070; border-color:#7a3030; }
+
+        /* ── Divider ── */
         .glow-divider {
             border: none;
             height: 1px;
-            background: linear-gradient(90deg, transparent, var(--blue-primary), transparent);
-            margin: 2rem 0;
+            background: linear-gradient(90deg, transparent, var(--green-mid), transparent);
+            margin: 1.5rem 0;
         }
 
         /* ── Alert ── */
-        .alert { border-radius: 10px; border: none; }
-        .alert-success { background:#0d2b1a; color:#4caf50; }
-        .alert-danger  { background:#2b0d0d; color:#ef5350; }
-        .alert-warning { background:#2b250d; color:#ffc107; }
-        .alert-info    { background:#0d1f2b; color:#29b6f6; }
+        .alert { border-radius: 6px; border: none; }
+        .alert-success { background: var(--alert-success-bg); color: var(--alert-success-text); }
+        .alert-danger  { background: var(--alert-danger-bg);  color: var(--alert-danger-text); }
+        .alert-warning { background: var(--alert-warning-bg); color: var(--alert-warning-text); }
+        .alert-info    { background: var(--alert-info-bg);    color: var(--alert-info-text); }
 
         /* ── Page Title ── */
         .page-title {
-            font-size: 1.6rem;
+            font-size: 1.5rem;
             font-weight: 700;
-            color: var(--blue-primary);
-            text-shadow: 0 0 20px var(--blue-glow);
+            color: var(--title-color);
+            border-bottom: 2px solid var(--title-border);
+            padding-bottom: 6px;
+            margin-bottom: 1rem;
+            transition: color .3s;
+        }
+
+        /* ── Guide Banner ── */
+        .guide-banner {
+            background: var(--green-light);
+            border: 1px solid var(--badge-border);
+            border-radius: 6px;
+            padding: 10px 16px;
+            transition: background .3s;
         }
     </style>
 </head>
@@ -188,50 +291,69 @@
 
 <nav class="navbar navbar-expand-lg sticky-top">
     <div class="container">
-        <!-- โลโก้ LOGOHXH1 แทนที่ข้อความ -->
-        <a class="navbar-brand" href="{{ url_for('characters.index') }}">
-            <img src="{{ url_for('static', filename='img/nen/LogoHxH1.png') }}"
-                 alt="HxH Nen Database"
-                 class="navbar-logo"
-                 onerror="this.style.display='none'; this.nextElementSibling.style.display='inline';">
-            <span style="display:none;"> HxH <span style="color:#7ec8ff;">Nen</span> Database</span>
-        </a>
-        <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
-            <span style="color:var(--blue-primary);">☰</span>
-        </button>
-        <div class="collapse navbar-collapse" id="navMenu">
-            <ul class="navbar-nav ms-auto align-items-center gap-1">
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ url_for('characters.index') }}">🏠 หน้าหลัก</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ url_for('characters.nen_guide') }}">📖 คู่มือเน็น</a>
-                </li>
+        <div class="navbar-inner">
+            <!-- Brand / Logo -->
+            <a class="navbar-brand" href="{{ url_for('characters.index') }}">
+                <img src="{{ url_for('static', filename='img/nen/LogoHxH1.png') }}"
+                     alt="HxH Nen Database"
+                     class="navbar-logo"
+                     onerror="this.style.display='none'; this.nextElementSibling.style.display='inline';">
+                <span style="display:none;">HxH Nen Database</span>
+            </a>
 
-                {% if current_user.is_authenticated %}
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ url_for('characters.add') }}">➕ เพิ่มตัวละคร</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ url_for('auth.admin_users') }}">👥 สมาชิก</a>
-                </li>
-                <li class="nav-item px-2">
-                    <span class="nav-link nav-user">👤 {{ current_user.username }}</span>
-                </li>
-                <li class="nav-item">
-                    <a class="btn btn-sm btn-outline-secondary px-3"
-                       href="{{ url_for('auth.logout') }}">🚪 ออก</a>
-                </li>
-                {% else %}
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ url_for('auth.login') }}">🔑 เข้าสู่ระบบ</a>
-                </li>
-                <li class="nav-item">
-                    <a class="btn btn-primary btn-sm px-3"
-                       href="{{ url_for('auth.register') }}">📝 สมัครสมาชิก</a>
-                </li>
-                {% endif %}
-            </ul>
+            <!-- Toggler (mobile) -->
+            <button class="navbar-toggler border-0 me-2" type="button"
+                    data-bs-toggle="collapse" data-bs-target="#navMenu"
+                    style="color: var(--text-nav);">
+                <span style="font-size:1.2rem;">&#9776;</span>
+            </button>
+
+            <!-- Nav links -->
+            <div class="collapse navbar-collapse" id="navMenu">
+                <ul class="navbar-nav ms-auto align-items-center gap-1">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('characters.index') }}">หน้าหลัก</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('characters.nen_guide') }}">คู่มือเน็น</a>
+                    </li>
+                    {% if current_user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('characters.add') }}">เพิ่มตัวละคร</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('auth.admin_users') }}">สมาชิก</a>
+                    </li>
+                    <li class="nav-item px-2">
+                        <span class="nav-link nav-user">{{ current_user.username }}</span>
+                    </li>
+                    <li class="nav-item">
+                        <a class="btn btn-sm btn-outline-secondary px-3"
+                           href="{{ url_for('auth.logout') }}"
+                           style="color:var(--text-nav); border-color:#4a7a4a66;">ออก</a>
+                    </li>
+                    {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('auth.login') }}">เข้าสู่ระบบ</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="btn btn-sm btn-primary px-3"
+                           href="{{ url_for('auth.register') }}">สมัครสมาชิก</a>
+                    </li>
+                    {% endif %}
+
+                    <!-- Dark Mode Toggle -->
+                    <li class="nav-item ms-2">
+                        <button class="dark-toggle" onclick="toggleDark()" id="darkBtn">
+                            <span id="darkIcon">🌙</span>
+                            <span id="darkLabel">Dark</span>
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="navbar-subnav">
+            ฐานข้อมูลตัวละครและสายเน็น Hunter x Hunter
         </div>
     </div>
 </nav>
@@ -242,7 +364,7 @@
             {% for category, message in messages %}
             <div class="alert alert-{{ category }} alert-dismissible fade show d-flex align-items-center gap-2">
                 {{ message }}
-                <button type="button" class="btn-close btn-close-white ms-auto" data-bs-dismiss="alert"></button>
+                <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert"></button>
             </div>
             {% endfor %}
         {% endif %}
@@ -252,5 +374,32 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    const html = document.documentElement;
+    const savedTheme = localStorage.getItem('hxh-theme') || 'light';
+    html.setAttribute('data-theme', savedTheme);
+    updateToggleUI(savedTheme);
+
+    function toggleDark() {
+        const current = html.getAttribute('data-theme');
+        const next = current === 'dark' ? 'light' : 'dark';
+        html.setAttribute('data-theme', next);
+        localStorage.setItem('hxh-theme', next);
+        updateToggleUI(next);
+    }
+
+    function updateToggleUI(theme) {
+        const icon  = document.getElementById('darkIcon');
+        const label = document.getElementById('darkLabel');
+        if (!icon) return;
+        if (theme === 'dark') {
+            icon.textContent  = '🌙';
+            label.textContent = 'Light';
+        } else {
+            icon.textContent  = '🌙';
+            label.textContent = 'Dark';
+        }
+    }
+</script>
 </body>
 </html>
