@@ -58,7 +58,6 @@
 }
 #heroLogo { animation: logoPulse 4s ease-in-out infinite alternate; }
 
-/* Light mode hero: subtle border + lighter bg */
 [data-theme="light"] #heroBanner {
     border: 1px solid #d0cfc8 !important;
     background: linear-gradient(135deg, #f0f0f0 0%, #e8e8e8 50%, #f0f0f0 100%) !important;
@@ -73,17 +72,13 @@
     var saved = [];
     try { saved = JSON.parse(localStorage.getItem('hxh-hero') || '["#ffffff","#0a0a0a"]'); } catch(e) { saved = ['#ffffff','#0a0a0a']; }
     var theme = document.documentElement.getAttribute('data-theme');
-    if (theme !== 'light') {
-        applyHeroColor(saved[0], saved[1]);
-    }
+    if (theme !== 'light') { applyHeroColor(saved[0], saved[1]); }
 })();
 
 function setHeroColor(color, bg) {
     localStorage.setItem('hxh-hero', JSON.stringify([color, bg]));
     var theme = document.documentElement.getAttribute('data-theme');
-    if (theme !== 'light') {
-        applyHeroColor(color, bg);
-    }
+    if (theme !== 'light') { applyHeroColor(color, bg); }
 }
 
 function applyHeroColor(color, bg) {
@@ -99,7 +94,6 @@ function applyHeroColor(color, bg) {
     }
 }
 
-// Re-apply when theme toggles
 var _origToggle = window.toggleDark;
 window.toggleDark = function() {
     if (_origToggle) _origToggle();
@@ -131,31 +125,39 @@ window.toggleDark = function() {
 </div>
 
 <!-- Nen Guide Banner -->
-<div class="card p-3 mb-4 d-flex flex-row align-items-center justify-content-between"
-     style="background:linear-gradient(135deg,#0d1b2e,#0a1a3a); border-color:#1e90ff44;">
+<div class="d-flex flex-row align-items-center justify-content-between p-3 mb-3"
+     style="background: var(--bg-nav);
+            border-radius: 10px;
+            border: 1px solid rgba(255,255,255,.08);">
     <div>
-        <p class="mb-0 fw-bold" style="color:#7ec8ff;">📖 ยังไม่รู้จักสายเน็น?</p>
-        <small style="color:var(--text-muted);">
+        <p class="mb-0 fw-bold" style="color:#d4e8d4;">📖 ยังไม่รู้จักสายเน็น?</p>
+        <small style="color:rgba(212,232,212,.7);">
             ดูคู่มือสายเน็นทั้ง 6 สาย พร้อม % การใช้งานข้ามสาย
         </small>
     </div>
     <a href="{{ url_for('characters.nen_guide') }}"
-       class="btn btn-primary btn-sm px-3 ms-3 text-nowrap">
+       class="btn btn-sm px-3 ms-3 text-nowrap fw-bold"
+       style="background:rgba(255,255,255,.15); color:#fff;
+              border:1px solid rgba(255,255,255,.25); border-radius:6px;">
         ดูคู่มือ →
     </a>
 </div>
 
 <!-- Login Banner -->
 {% if not current_user.is_authenticated %}
-<div class="alert d-flex align-items-center gap-3 mb-4"
-     style="background:#0a1a30; border:1px solid #1e90ff44; border-radius:10px;">
-    <span style="font-size:1.5rem;">🔒</span>
+<div class="d-flex align-items-center gap-3 p-3 mb-4"
+     style="background: var(--bg-nav);
+            border-radius: 10px;
+            border: 1px solid rgba(255,255,255,.08);">
+    <span style="font-size:1.4rem;">🔒</span>
     <div>
-        <strong style="color:#7ec8ff;">อยากเพิ่มหรือแก้ไขตัวละคร?</strong>
-        <span style="color:var(--text-muted);"> กรุณา </span>
-        <a href="{{ url_for('auth.login') }}" style="color:var(--blue-primary);">เข้าสู่ระบบ</a>
-        <span style="color:var(--text-muted);"> หรือ </span>
-        <a href="{{ url_for('auth.register') }}" style="color:var(--blue-primary);">สมัครสมาชิก</a>
+        <strong style="color:#d4e8d4;">อยากเพิ่มหรือแก้ไขตัวละคร?</strong>
+        <span style="color:rgba(212,232,212,.7);"> กรุณา </span>
+        <a href="{{ url_for('auth.login') }}"
+           style="color:#fff; font-weight:600; text-decoration:underline;">เข้าสู่ระบบ</a>
+        <span style="color:rgba(212,232,212,.7);"> หรือ </span>
+        <a href="{{ url_for('auth.register') }}"
+           style="color:#fff; font-weight:600; text-decoration:underline;">สมัครสมาชิก</a>
     </div>
 </div>
 {% endif %}
