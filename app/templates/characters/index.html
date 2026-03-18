@@ -5,8 +5,7 @@
 
 <!-- ── Hero Banner with HXH2 Logo ── -->
 <div id="heroBanner" class="text-center mb-4" style="
-    background: linear-gradient(135deg, #060e1e 0%, #0a1a3a 50%, #060e1e 100%);
-    border: 1px solid var(--border-color);
+    background: linear-gradient(135deg, #0a0a0a 0%, #111111 50%, #0a0a0a 100%);
     border-radius: 20px;
     padding: 2.5rem 1.5rem 1.5rem;
     position: relative;
@@ -15,7 +14,7 @@
     <!-- Glow effect background -->
     <div id="heroBg" style="
         position: absolute; inset: 0;
-        background: radial-gradient(ellipse at center, #1e90ff15 0%, transparent 70%);
+        background: radial-gradient(ellipse at center, #ffffff08 0%, transparent 70%);
         pointer-events: none;"></div>
 
     <!-- HXH2 Logo -->
@@ -24,23 +23,20 @@
              src="{{ url_for('static', filename='img/nen/LogoHxH2.png') }}"
              alt="Hunter x Hunter"
              style="max-height: 160px; max-width: 80%; object-fit: contain;
-                    filter: drop-shadow(0 0 20px #1e90ff55);"
+                    filter: drop-shadow(0 0 20px #ffffff33);"
              onerror="this.style.display='none'">
-        <p class="mt-3 mb-3" style="color:var(--text-muted); font-size:.9rem; letter-spacing:1px;">
-            ⚡ ฐานข้อมูลตัวละครและสายเน็น
-        </p>
     </div>
 
     <!-- Color Picker -->
-    <div style="position:relative; z-index:2; display:flex; justify-content:center; align-items:center; gap:8px; flex-wrap:wrap;">
+    <div style="position:relative; z-index:2; display:flex; justify-content:center; align-items:center; gap:8px; flex-wrap:wrap; margin-top:1rem;">
         <small style="color:var(--text-muted); font-size:.72rem;">🎨 สีธีม:</small>
         {% set colors = [
-            ('#2d7a2d', '#1a3a1a', 'Hunter Green'),
-            ('#1e90ff', '#0a1a3a', 'Aura Blue'),
-            ('#c8aa50', '#2a2410', 'Nen Gold'),
-            ('#8855cc', '#200a30', 'Killua Purple'),
-            ('#cc4444', '#300a0a', 'Hisoka Red'),
-            ('#00bcd4', '#061a20', 'Gon Cyan'),
+            ('#2d7a2d', '#0d1a0d', 'Hunter Green'),
+            ('#1e90ff', '#050f1a', 'Aura Blue'),
+            ('#c8aa50', '#1a1508', 'Nen Gold'),
+            ('#8855cc', '#100818', 'Killua Purple'),
+            ('#cc4444', '#180505', 'Hisoka Red'),
+            ('#00bcd4', '#030f12', 'Gon Cyan'),
         ] %}
         {% for color, bg, name in colors %}
         <button onclick="setHeroColor('{{ color }}', '{{ bg }}')"
@@ -57,22 +53,37 @@
 
 <style>
 @keyframes logoPulse {
-    from { filter: var(--logo-glow-from, drop-shadow(0 0 12px #2d7a2d44)); }
-    to   { filter: var(--logo-glow-to, drop-shadow(0 0 28px #2d7a2d99)); }
+    from { filter: var(--logo-glow-from, drop-shadow(0 0 12px #ffffff22)); }
+    to   { filter: var(--logo-glow-to, drop-shadow(0 0 28px #ffffff55)); }
 }
 #heroLogo { animation: logoPulse 4s ease-in-out infinite alternate; }
+
+/* Light mode hero: subtle border + lighter bg */
+[data-theme="light"] #heroBanner {
+    border: 1px solid #d0cfc8 !important;
+    background: linear-gradient(135deg, #f0f0f0 0%, #e8e8e8 50%, #f0f0f0 100%) !important;
+}
+[data-theme="light"] #heroBg {
+    background: radial-gradient(ellipse at center, #00000008 0%, transparent 70%) !important;
+}
 </style>
 
 <script>
 (function() {
     var saved = [];
-    try { saved = JSON.parse(localStorage.getItem('hxh-hero') || '["#2d7a2d","#1a3a1a"]'); } catch(e) { saved = ['#2d7a2d','#1a3a1a']; }
-    applyHeroColor(saved[0], saved[1]);
+    try { saved = JSON.parse(localStorage.getItem('hxh-hero') || '["#ffffff","#0a0a0a"]'); } catch(e) { saved = ['#ffffff','#0a0a0a']; }
+    var theme = document.documentElement.getAttribute('data-theme');
+    if (theme !== 'light') {
+        applyHeroColor(saved[0], saved[1]);
+    }
 })();
 
 function setHeroColor(color, bg) {
     localStorage.setItem('hxh-hero', JSON.stringify([color, bg]));
-    applyHeroColor(color, bg);
+    var theme = document.documentElement.getAttribute('data-theme');
+    if (theme !== 'light') {
+        applyHeroColor(color, bg);
+    }
 }
 
 function applyHeroColor(color, bg) {
@@ -80,13 +91,32 @@ function applyHeroColor(color, bg) {
     var bgLayer = document.getElementById('heroBg');
     var logo = document.getElementById('heroLogo');
     if (!banner) return;
-    banner.style.background = 'linear-gradient(135deg, ' + bg + ' 0%, ' + bg + 'cc 50%, ' + bg + ' 100%)';
-    if (bgLayer) bgLayer.style.background = 'radial-gradient(ellipse at center, ' + color + '18 0%, transparent 70%)';
+    banner.style.background = 'linear-gradient(135deg, ' + bg + ' 0%, ' + bg + 'ee 50%, ' + bg + ' 100%)';
+    if (bgLayer) bgLayer.style.background = 'radial-gradient(ellipse at center, ' + color + '10 0%, transparent 70%)';
     if (logo) {
-        logo.style.setProperty('--logo-glow-from', 'drop-shadow(0 0 12px ' + color + '44)');
-        logo.style.setProperty('--logo-glow-to', 'drop-shadow(0 0 28px ' + color + '99)');
+        logo.style.setProperty('--logo-glow-from', 'drop-shadow(0 0 12px ' + color + '33)');
+        logo.style.setProperty('--logo-glow-to', 'drop-shadow(0 0 28px ' + color + '77)');
     }
 }
+
+// Re-apply when theme toggles
+var _origToggle = window.toggleDark;
+window.toggleDark = function() {
+    if (_origToggle) _origToggle();
+    setTimeout(function() {
+        var theme = document.documentElement.getAttribute('data-theme');
+        if (theme === 'light') {
+            var banner = document.getElementById('heroBanner');
+            var bgLayer = document.getElementById('heroBg');
+            if (banner) banner.style.background = '';
+            if (bgLayer) bgLayer.style.background = '';
+        } else {
+            var saved = [];
+            try { saved = JSON.parse(localStorage.getItem('hxh-hero') || '["#ffffff","#0a0a0a"]'); } catch(e) { saved = ['#ffffff','#0a0a0a']; }
+            applyHeroColor(saved[0], saved[1]);
+        }
+    }, 10);
+};
 </script>
 
 <div class="d-flex justify-content-between align-items-center mb-4">
