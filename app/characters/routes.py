@@ -259,3 +259,58 @@ def nen_guide():
     ]
 
     return render_template('characters/nen_guide.html', nen_info=NEN_INFO, nen_techniques=NEN_TECHNIQUES)
+
+# -------------------- NEN TYPE EDIT (admin) --------------------
+@characters.route('/nen-type/<nen_en>/edit', methods=['POST'])
+@login_required
+def edit_nen_type(nen_en):
+    from ..models import NenTypeInfo
+    info = NenTypeInfo.query.filter_by(nen_type_en=nen_en).first()
+    if not info:
+        info = NenTypeInfo(nen_type_en=nen_en)
+        db.session.add(info)
+
+    info.extended = request.form.get('extended', '')
+
+    new_image = save_image(request.files.get('nen_image'), max_size_kb=800, max_dimension=1200)
+    if new_image:
+        info.image = new_image
+
+    db.session.commit()
+    flash(f'อัปเดตข้อมูล {nen_en} แล้วครับ', 'success')
+    return redirect(url_for('characters.nen_guide') + f'#{nen_en}')
+
+@characters.route('/nen-guide')
+def nen_guide():
+    from ..models import NenTypeInfo
+    # โหลด extended info จาก DB
+    nen_extras = {n.nen_type_en: n for n in NenTypeInfo.query.all()}
+    
+    NEN_INFO = [
+        {'en': 'Enhancement', 'th': 'สายเสริมพลัง', 'color': '#4caf50', 'icon': 'enhancement.png',
+         'desc': 'เพิ่มความสามารถทางกายภาพของตัวเองหรือสิ่งของ แข็งแกร่งที่สุดในการต่อสู้ตรงๆ (27%)',
+         'usage': NEN_USAGE['Enhancement'],
+         'extra': nen_extras.get('Enhancement')},
+        {'en': 'Emission', 'th': 'สายแผ่พุ่ง', 'color': '#1e90ff', 'icon': 'emission.png',
+         'desc': 'ปล่อยออร่าออกจากร่างกาย โจมตีได้จากระยะไกล (24%)',
+         'usage': NEN_USAGE['Emission'],
+         'extra': nen_extras.get('Emission')},
+        {'en': 'Transmutation', 'th': 'สายเปลี่ยนแปลง', 'color': '#ffc107', 'icon': 'transmutation.png',
+         'desc': 'เปลี่ยนคุณสมบัติของออร่าให้เป็นสิ่งอื่น เช่น ไฟฟ้า ยาง (19%)',
+         'usage': NEN_USAGE['Transmutation'],
+         'extra': nen_extras.get('Transmutation')},
+        {'en': 'Conjuration', 'th': 'สายแปรสภาพ', 'color': '#ab47bc', 'icon': 'conjuration.png',
+         'desc': 'สร้างวัตถุจริงจากออร่า คงอยู่ได้แม้ไม่ใช้ออร่า (15%)',
+         'usage': NEN_USAGE['Conjuration'],
+         'extra': nen_extras.get('Conjuration')},
+        {'en': 'Manipulation', 'th': 'สายควบคุม', 'color': '#ff8c42', 'icon': 'manipulation.png',
+         'desc': 'ควบคุมสิ่งมีชีวิตหรือวัตถุด้วยออร่า (15%)',
+         'usage': NEN_USAGE['Manipulation'],
+         'extra': nen_extras.get('Manipulation')},
+        {'en': 'Specialization', 'th': 'สายพิเศษ', 'color': '#ef5350', 'icon': 'specialization.png',
+         'desc': 'ความสามารถนอกหมวดหมู่ หายากที่สุด (0.033%)',
+         'usage': NEN_USAGE['Specialization'],
+         'extra': nen_extras.get('Specialization')},
+    ]
+    # ... NEN_TECHNIQUES เหมือนเดิม ...
+    return render_template('characters/nen_guide.html', nen_info=NEN_INFO, nen_techniques=NEN_TECHNIQUES)

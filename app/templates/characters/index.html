@@ -34,6 +34,62 @@
     </p>
 </div>
 
+<!-- Color Picker -->
+    <div style="position:relative; z-index:2; display:flex; justify-content:center; align-items:center; gap:8px; flex-wrap:wrap;">
+        <small style="color:var(--text-muted); font-size:.72rem;">🎨 สีธีม:</small>
+        {% set colors = [
+            ('#2d7a2d', '#1a3a1a', 'Hunter Green'),
+            ('#1e90ff', '#0a1a3a', 'Aura Blue'),
+            ('#c8aa50', '#2a2410', 'Nen Gold'),
+            ('#8855cc', '#200a30', 'Killua Purple'),
+            ('#cc4444', '#300a0a', 'Hisoka Red'),
+            ('#00bcd4', '#061a20', 'Gon Cyan'),
+        ] %}
+        {% for color, bg, name in colors %}
+        <button onclick="setHeroColor('{{ color }}', '{{ bg }}')"
+                title="{{ name }}"
+                style="width:22px; height:22px; border-radius:50%; background:{{ color }};
+                       border:2px solid transparent; cursor:pointer; transition:all .2s;
+                       box-shadow:0 0 6px {{ color }}88;"
+                onmouseover="this.style.transform='scale(1.3)'; this.style.borderColor='white';"
+                onmouseout="this.style.transform='scale(1)'; this.style.borderColor='transparent';">
+        </button>
+        {% endfor %}
+    </div>
+</div>
+
+<style>
+@keyframes logoPulse {
+    from { filter: var(--logo-glow-from, drop-shadow(0 0 12px #2d7a2d44)); }
+    to   { filter: var(--logo-glow-to, drop-shadow(0 0 28px #2d7a2d99)); }
+}
+#heroLogo { animation: logoPulse 4s ease-in-out infinite alternate; }
+</style>
+
+<script>
+const HERO_COLORS = JSON.parse(localStorage.getItem('hxh-hero') || '["#2d7a2d","#1a3a1a"]');
+applyHeroColor(HERO_COLORS[0], HERO_COLORS[1]);
+
+function setHeroColor(color, bg) {
+    localStorage.setItem('hxh-hero', JSON.stringify([color, bg]));
+    applyHeroColor(color, bg);
+}
+
+function applyHeroColor(color, bg) {
+    const banner = document.getElementById('heroBanner');
+    const bgLayer = document.getElementById('heroBg');
+    const logo = document.getElementById('heroLogo');
+    if (!banner) return;
+    banner.style.background = `linear-gradient(135deg, ${bg} 0%, ${bg}cc 50%, ${bg} 100%)`;
+    bgLayer.style.background = `radial-gradient(ellipse at center, ${color}18 0%, transparent 70%)`;
+    if (logo) {
+        logo.style.setProperty('--logo-glow-from', `drop-shadow(0 0 12px ${color}44)`);
+        logo.style.setProperty('--logo-glow-to', `drop-shadow(0 0 28px ${color}99)`);
+        logo.style.filter = `drop-shadow(0 0 20px ${color}55)`;
+    }
+}
+</script>
+
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h3 class="page-title mb-0">⚡ HxH Characters</h3>
     {% if current_user.is_authenticated %}

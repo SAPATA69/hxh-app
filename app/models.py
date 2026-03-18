@@ -39,5 +39,20 @@ class Character(db.Model):
     gallery_images = db.Column(db.Text)      # JSON array of base64 images (up to 5)
     created_at  = db.Column(db.DateTime, default=datetime.utcnow)
 
+
+
+class NenTypeInfo(db.Model):
+    __tablename__ = 'nen_type_info'
+    id          = db.Column(db.Integer, primary_key=True)
+    nen_type_en = db.Column(db.String(50), unique=True, nullable=False)
+    extended    = db.Column(db.Text)   # รายละเอียดขยายความ
+    image       = db.Column(db.Text)   # base64 รูปภาพ
+    updated_at  = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+
+
+
     def __repr__(self):
         return f'<Character {self.name}>'
+    
+    

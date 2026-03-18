@@ -60,5 +60,16 @@ def create_app():
               ADD COLUMN IF NOT EXISTS gallery_images TEXT
             """))
             conn.commit()
-
-    return app
+            
+            conn.execute(text("""
+              CREATE TABLE IF NOT EXISTS nen_type_info (
+              id SERIAL PRIMARY KEY,
+              nen_type_en VARCHAR(50) UNIQUE NOT NULL,
+              extended TEXT,
+              image TEXT,
+              updated_at TIMESTAMP DEFAULT NOW()
+              )
+            """))
+            conn.commit()
+            
+            return app

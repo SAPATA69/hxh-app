@@ -25,22 +25,39 @@
     </div>
 </div>
 
+<!-- Lightbox Modal -->
+<div id="lightbox" onclick="closeLightbox()"
+     style="display:none; position:fixed; inset:0; background:#000b; z-index:9999;
+            align-items:center; justify-content:center; cursor:zoom-out;">
+    <img id="lightboxImg" src="" style="max-width:90vw; max-height:90vh; border-radius:12px;
+         box-shadow:0 0 40px #0008; object-fit:contain;">
+</div>
+
 <!-- การ์ดแต่ละสาย -->
 <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mb-5">
     {% for nen in nen_info %}
-    <div class="col">
-        <div class="card h-100 p-3">
+    <div class="col" id="{{ nen.en }}">
+        <div class="card h-100 p-3" style="border-color:{{ nen.color }}44;">
+            <!-- Header -->
             <div class="d-flex align-items-center gap-3 mb-3">
                 <img src="{{ url_for('static', filename='img/nen/' ~ nen.icon) }}"
                      style="width:56px; height:56px; object-fit:contain; border-radius:8px;
-                            background:#0a1525; padding:6px;"
+                            background:#0a1525; padding:6px; cursor:zoom-in;
+                            transition:transform .2s; border:1px solid {{ nen.color }}44;"
+                     onclick="openLightbox(this.src)"
+                     onmouseover="this.style.transform='scale(1.1)'"
+                     onmouseout="this.style.transform='scale(1)'"
+                     title="คลิกเพื่อขยาย"
                      onerror="this.style.display='none'">
                 <div>
                     <h5 class="mb-0 fw-bold" style="color:{{ nen.color }};">{{ nen.th }}</h5>
                     <small style="color:var(--text-muted);">{{ nen.en }}</small>
                 </div>
             </div>
+
             <p class="small mb-3" style="color:var(--text-muted);">{{ nen.desc }}</p>
+
+            <!-- % bars -->
             <div class="mt-auto">
                 <p class="mb-2" style="color:var(--text-muted); font-size:.8rem;">อัตราการใช้สายเน็นอื่น:</p>
                 {% for type_name, pct in nen.usage.items() %}
@@ -58,10 +75,113 @@
                 </div>
                 {% endfor %}
             </div>
+
+            <!-- Expand Button -->
+            <button onclick="toggleExpand('expand-{{ nen.en }}')"
+                    class="btn btn-sm mt-3 w-100"
+                    style="background:{{ nen.color }}22; color:{{ nen.color }};
+                           border:1px solid {{ nen.color }}44; border-radius:6px;
+                           font-size:.8rem; transition:all .2s;"
+                    onmouseover="this.style.background='{{ nen.color }}33'"
+                    onmouseout="this.style.background='{{ nen.color }}22'">
+                📖 อ่านรายละเอียดเพิ่มเติม ▾
+            </button>
+
+            <!-- Expandable Section -->
+            <div id="expand-{{ nen.en }}"
+                 style="display:none; margin-top:.75rem; border-top:1px solid {{ nen.color }}33; padding-top:.75rem;">
+
+                <!-- Extra image (if exists) -->
+                {% if nen.extra and nen.extra.image %}
+                <div class="text-center mb-3">
+                    <img src="{{ nen.extra.image }}"
+                         style="max-width:100%; max-height:200px; object-fit:contain; border-radius:8px;
+                                border:1px solid {{ nen.color }}44; cursor:zoom-in;"
+                         onclick="openLightbox(this.src)"
+                         title="คลิกเพื่อขยาย">
+                </div>
+                {% endif %}
+
+                <!-- Extended description -->
+                {% if nen.extra and nen.extra.extended %}
+                <div style="color:var(--text-main); font-size:.85rem; line-height:1.8;
+                            white-space:pre-wrap; word-break:break-word;">
+                    {{ nen.extra.extended }}
+                </div>
+                {% else %}
+                <p style="color:var(--text-muted); font-size:.82rem; font-style:italic;">
+                    ยังไม่มีรายละเอียดเพิ่มเติม
+                    {% if current_user.is_authenticated %} — กรอกในฟอร์มด้านล่าง{% endif %}
+                </p>
+                {% endif %}
+
+                <!-- Admin edit form -->
+                {% if current_user.is_authenticated %}
+                <div class="mt-3 pt-2" style="border-top:1px dashed {{ nen.color }}33;">
+                    <p style="color:{{ nen.color }}; font-size:.75rem; margin-bottom:.5rem;">✏️ แก้ไข (admin):</p>
+                    <form method="POST"
+                          action="{{ url_for('characters.edit_nen_type', nen_en=nen.en) }}"
+                          enctype="multipart/form-data">
+                        <textarea name="extended" rows="4" class="form-control mb-2"
+                                  style="font-size:.8rem;"
+                                  placeholder="เขียนรายละเอียดขยายความสายเน็น...">{{ nen.extra.extended if nen.extra else '' }}</textarea>
+                        <div class="mb-2">
+                            <label style="color:var(--text-muted); font-size:.75rem;">🖼️ รูปภาพประจำสาย:</label>
+                            <input type="file" name="nen_image" class="form-control form-control-sm"
+                                   accept="image/*" onchange="previewNen(this, '{{ nen.en }}')">
+                            <div id="nen-preview-{{ nen.en }}" class="mt-1 text-center"></div>
+                        </div>
+                        <button type="submit" class="btn btn-sm w-100"
+                                style="background:{{ nen.color }}; color:#000; font-weight:600;
+                                       border:none; border-radius:4px;">
+                            💾 บันทึก
+                        </button>
+                    </form>
+                </div>
+                {% endif %}
+            </div>
         </div>
     </div>
     {% endfor %}
 </div>
+
+<script>
+function openLightbox(src) {
+    const lb = document.getElementById('lightbox');
+    document.getElementById('lightboxImg').src = src;
+    lb.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+}
+function closeLightbox() {
+    document.getElementById('lightbox').style.display = 'none';
+    document.body.style.overflow = '';
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+
+function toggleExpand(id) {
+    const el = document.getElementById(id);
+    const btn = el.previousElementSibling;
+    if (el.style.display === 'none') {
+        el.style.display = 'block';
+        btn.innerHTML = btn.innerHTML.replace('▾', '▴');
+    } else {
+        el.style.display = 'none';
+        btn.innerHTML = btn.innerHTML.replace('▴', '▾');
+    }
+}
+
+function previewNen(input, nen) {
+    const container = document.getElementById('nen-preview-' + nen);
+    if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = e => {
+            container.innerHTML = `<img src="${e.target.result}"
+                style="max-height:100px; border-radius:6px; margin-top:4px;">`;
+        };
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+</script>
 
 <!-- วิชาเน็น -->
 <h3 class="page-title mb-4">📚 วิชาเน็น (Nen Techniques)</h3>
