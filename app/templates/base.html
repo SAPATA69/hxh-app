@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="th" data-theme="light">
+<html lang="th" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,284 +7,245 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
-        /* ── Light Mode (default) ── */
-        :root {
-            --bg-main:      #f2f2f2;
-            --bg-card:      #ffffff;
-            --bg-nav:       #2d4a2d;
-            --bg-subnav:    #1e3a1e;
-            --bg-input:     #ffffff;
-            --border-color: #d0cfc8;
-            --text-main:    #1a1a1a;
-            --text-muted:   #666666;
-            --text-nav:     #d4e8d4;
-            --text-nav-brand: #ffffff;
-            --green-primary: #2d4a2d;
-            --green-accent:  #a5c8a5;
-            --green-light:   #e8f0e8;
-            --green-mid:     #4a7a4a;
-            --btn-primary-bg: #2d4a2d;
-            --btn-primary-text: #ffffff;
-            --card-header-bg: #2d4a2d;
-            --card-footer-bg: #f5f5f0;
-            --badge-bg:      #e8f0e8;
-            --badge-border:  #a5c8a5;
-            --title-color:   #2d4a2d;
-            --title-border:  #4a7a4a;
-            --alert-success-bg: #e8f0e8;
-            --alert-success-text: #2d4a2d;
-            --alert-danger-bg:  #fce8e8;
-            --alert-danger-text: #7a2d2d;
-            --alert-warning-bg: #f5f0e0;
-            --alert-warning-text: #7a5a1a;
-            --alert-info-bg:    #e0ecf5;
-            --alert-info-text:  #1a4a6a;
+        /* ══════════════════════════════════
+           LIGHT MODE
+        ══════════════════════════════════ */
+        [data-theme="light"] {
+            --bg-main:           #f2f2f2;
+            --bg-card:           #ffffff;
+            --bg-card-alt:       #f5f5f0;
+            --bg-nav:            #2d4a2d;
+            --bg-subnav:         #1e3a1e;
+            --bg-input:          #ffffff;
+            --bg-input-focus:    #f5faf5;
+            --border-color:      #d0cfc8;
+            --text-main:         #1a1a1a;
+            --text-muted:        #555555;
+            --text-nav:          #d4e8d4;
+            --text-nav-brand:    #ffffff;
+            --green-primary:     #2d4a2d;
+            --green-mid:         #4a7a4a;
+            --green-light:       #e8f0e8;
+            --btn-bg:            #2d4a2d;
+            --btn-text:          #ffffff;
+            --btn-hover:         #4a7a4a;
+            --card-header-bg:    #2d4a2d;
+            --card-header-text:  #ffffff;
+            --card-footer-bg:    #f0f0ec;
+            --title-color:       #2d4a2d;
+            --title-border:      #4a7a4a;
+            --link-color:        #2d4a2d;
+            --link-hover:        #4a7a4a;
+            --alert-s-bg:#e8f0e8; --alert-s-tx:#1e3a1e;
+            --alert-d-bg:#fce8e8; --alert-d-tx:#5a1a1a;
+            --alert-w-bg:#f5f0e0; --alert-w-tx:#5a4010;
+            --alert-i-bg:#e0ecf5; --alert-i-tx:#0a3050;
+            --b-en-bg:#e8f0e8; --b-en-tx:#1e3a1e; --b-en-bd:#a5c8a5;
+            --b-em-bg:#e0ecf5; --b-em-tx:#0a3050; --b-em-bd:#7aaac8;
+            --b-tr-bg:#f5f0e0; --b-tr-tx:#5a4010; --b-tr-bd:#c8aa60;
+            --b-co-bg:#f0e8f5; --b-co-tx:#3a0a5a; --b-co-bd:#b87ac8;
+            --b-ma-bg:#f5ece0; --b-ma-tx:#5a3010; --b-ma-bd:#c89060;
+            --b-sp-bg:#f5e0e0; --b-sp-tx:#5a1010; --b-sp-bd:#c87a7a;
         }
 
-        /* ── Dark Mode ── */
+        /* ══════════════════════════════════
+           DARK MODE (default)
+        ══════════════════════════════════ */
         [data-theme="dark"] {
-            --bg-main:      #151515;
-            --bg-card:      #1e1e1e;
-            --bg-nav:       #2d4a2d;
-            --bg-subnav:    #1e3a1e;
-            --bg-input:     #222222;
-            --border-color: #333333;
-            --text-main:    #e0e0e0;
-            --text-muted:   #888888;
-            --text-nav:     #d4e8d4;
-            --text-nav-brand: #ffffff;
-            --green-primary: #a5c8a5;
-            --green-accent:  #a5c8a5;
-            --green-light:   #1a2e1a;
-            --green-mid:     #4a7a4a;
-            --btn-primary-bg: #2d4a2d;
-            --btn-primary-text: #d4e8d4;
-            --card-header-bg: #2d4a2d;
-            --card-footer-bg: #252525;
-            --badge-bg:      #1b3a1b;
-            --badge-border:  #4a7a4a;
-            --title-color:   #a5c8a5;
-            --title-border:  #4a7a4a;
-            --alert-success-bg: #1a2e1a;
-            --alert-success-text: #a5c8a5;
-            --alert-danger-bg:  #2e1a1a;
-            --alert-danger-text: #e07070;
-            --alert-warning-bg: #2e2a10;
-            --alert-warning-text: #c8aa60;
-            --alert-info-bg:    #1a2a3a;
-            --alert-info-text:  #70a8c8;
+            --bg-main:           #151515;
+            --bg-card:           #1e2e1e;
+            --bg-card-alt:       #1a261a;
+            --bg-nav:            #2d4a2d;
+            --bg-subnav:         #1e3a1e;
+            --bg-input:          #1a261a;
+            --bg-input-focus:    #1e301e;
+            --border-color:      #3a5a3a;
+            --text-main:         #e0e0d8;
+            --text-muted:        #8a9a8a;
+            --text-nav:          #d4e8d4;
+            --text-nav-brand:    #ffffff;
+            --green-primary:     #a5c8a5;
+            --green-mid:         #6aaa6a;
+            --green-light:       #1a2e1a;
+            --btn-bg:            #2d4a2d;
+            --btn-text:          #d4e8d4;
+            --btn-hover:         #3a6a3a;
+            --card-header-bg:    #1e3a1e;
+            --card-header-text:  #d4e8d4;
+            --card-footer-bg:    #182818;
+            --title-color:       #a5c8a5;
+            --title-border:      #4a7a4a;
+            --link-color:        #a5c8a5;
+            --link-hover:        #c8e8c8;
+            --alert-s-bg:#1a2e1a; --alert-s-tx:#a5c8a5;
+            --alert-d-bg:#2e1a1a; --alert-d-tx:#e07070;
+            --alert-w-bg:#2a2410; --alert-w-tx:#c8aa60;
+            --alert-i-bg:#1a2a3a; --alert-i-tx:#70a8c8;
+            --b-en-bg:#1a2e1a; --b-en-tx:#a5c8a5; --b-en-bd:#4a7a4a;
+            --b-em-bg:#1a2535; --b-em-tx:#70a8c8; --b-em-bd:#2a5a7a;
+            --b-tr-bg:#2a2415; --b-tr-tx:#c8aa60; --b-tr-bd:#6a5a20;
+            --b-co-bg:#281530; --b-co-tx:#b87ac8; --b-co-bd:#5a2a7a;
+            --b-ma-bg:#2a1e10; --b-ma-tx:#c89060; --b-ma-bd:#7a4a20;
+            --b-sp-bg:#2e1515; --b-sp-tx:#e07070; --b-sp-bd:#7a3030;
         }
 
         * { box-sizing: border-box; }
 
         body {
             font-family: 'Prompt', sans-serif;
-            background: var(--bg-main);
+            background-color: var(--bg-main);
             color: var(--text-main);
             min-height: 100vh;
-            transition: background .3s, color .3s;
+            transition: background-color .3s, color .3s;
         }
+
+        a { color: var(--link-color); transition: color .2s; }
+        a:hover { color: var(--link-hover); }
 
         /* ── Navbar ── */
         .navbar {
             background: var(--bg-nav) !important;
-            border-bottom: 1px solid var(--bg-subnav);
+            border-bottom: 2px solid var(--bg-subnav);
             padding: 0 !important;
         }
         .navbar-inner {
-            display: flex;
-            align-items: center;
+            display: flex; align-items: center;
             justify-content: space-between;
-            padding: 10px 16px;
-            width: 100%;
+            padding: 10px 16px; width: 100%;
+            flex-wrap: wrap; gap: 8px;
         }
         .navbar-brand {
             color: var(--text-nav-brand) !important;
-            font-weight: 700;
-            font-size: 1.2rem;
-            letter-spacing: .5px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            font-weight: 700; font-size: 1.15rem;
             text-decoration: none;
+            display: flex; align-items: center; gap: 8px;
         }
-        .navbar-logo {
-            height: 36px;
-            width: auto;
-            object-fit: contain;
-        }
-        .nav-link {
-            color: var(--text-nav) !important;
-            transition: color .2s;
-            font-size: .9rem;
-        }
+        .navbar-logo { height: 36px; width: auto; object-fit: contain; }
+        .nav-link { color: var(--text-nav) !important; font-size: .9rem; transition: color .2s; padding: 4px 8px !important; }
         .nav-link:hover { color: #ffffff !important; }
-        .nav-user {
-            color: #ffffff !important;
-            font-weight: 600;
-        }
+        .nav-user { color: #ffffff !important; font-weight: 600; }
         .navbar-subnav {
             background: var(--bg-subnav);
-            padding: 4px 16px;
-            font-size: .78rem;
-            color: #7aaa7a;
-            border-top: 1px solid #1a2e1a44;
+            padding: 4px 16px; font-size: .78rem; color: #7aaa7a;
+            border-top: 1px solid rgba(255,255,255,.06);
         }
 
-        /* ── Dark Mode Toggle ── */
+        /* ── Dark Toggle ── */
         .dark-toggle {
-            background: var(--bg-subnav);
-            border: 1px solid #4a7a4a66;
-            border-radius: 20px;
-            padding: 4px 12px;
-            cursor: pointer;
-            color: var(--text-nav);
-            font-size: .78rem;
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            transition: background .2s;
-            white-space: nowrap;
+            background: rgba(0,0,0,.25);
+            border: 1px solid rgba(165,200,165,.3);
+            border-radius: 20px; padding: 4px 14px;
+            cursor: pointer; color: var(--text-nav);
+            font-size: .78rem; font-weight: 500;
+            display: flex; align-items: center; gap: 5px;
+            transition: background .2s; white-space: nowrap;
         }
-        .dark-toggle:hover { background: #1a2e1a; }
+        .dark-toggle:hover { background: rgba(0,0,0,.4); }
 
         /* ── Cards ── */
         .card {
             background: var(--bg-card);
             border: 1px solid var(--border-color);
             border-radius: 6px;
-            transition: transform .2s, box-shadow .2s, background .3s;
+            transition: transform .2s, box-shadow .2s, background-color .3s;
+            color: var(--text-main);
         }
-        .card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 16px rgba(45,74,45,.15);
-        }
+        .card:hover { transform: translateY(-2px); box-shadow: 0 4px 20px rgba(45,74,45,.2); }
         .card-header-green {
             background: var(--card-header-bg);
-            padding: 7px 12px;
-            border-radius: 6px 6px 0 0;
+            padding: 7px 12px; border-radius: 5px 5px 0 0;
         }
         .card-header-green .card-char-name {
-            color: #ffffff;
-            font-size: .82rem;
-            font-weight: 600;
+            color: var(--card-header-text);
+            font-size: .82rem; font-weight: 600; margin: 0;
         }
+        .card-body { background: var(--bg-card); color: var(--text-main); border-radius: 0; }
         .card-footer {
             background: var(--card-footer-bg) !important;
             border-top: 1px solid var(--border-color) !important;
             border-radius: 0 0 6px 6px;
-            transition: background .3s;
+            transition: background-color .3s;
         }
 
         /* ── Buttons ── */
         .btn-primary {
-            background: var(--btn-primary-bg);
-            border: none;
-            border-radius: 4px;
-            font-weight: 600;
-            color: var(--btn-primary-text);
-            transition: all .2s;
+            background: var(--btn-bg); border: none;
+            border-radius: 4px; font-weight: 600;
+            color: var(--btn-text); transition: all .2s;
         }
-        .btn-primary:hover {
-            background: var(--green-mid);
-            color: #ffffff;
-            transform: translateY(-1px);
-        }
-        .btn-outline-warning {
-            border-color: #a08040;
-            color: #a08040;
-            border-radius: 4px;
-        }
-        .btn-outline-warning:hover { background: #a08040; color: #fff; }
-        .btn-outline-danger {
-            border-color: #a04040;
-            color: #a04040;
-            border-radius: 4px;
-        }
-        .btn-outline-danger:hover { background: #a04040; color: #fff; }
+        .btn-primary:hover { background: var(--btn-hover); color: #ffffff; transform: translateY(-1px); }
+        .btn-outline-warning { border-color:#a08040; color:#a08040; border-radius:4px; }
+        .btn-outline-warning:hover { background:#a08040; color:#fff; }
+        .btn-outline-danger { border-color:#a04040; color:#a04040; border-radius:4px; }
+        .btn-outline-danger:hover { background:#a04040; color:#fff; }
         .btn-outline-secondary {
-            border-color: var(--border-color);
-            color: var(--text-muted);
-            border-radius: 4px;
+            border-color: var(--border-color); color: var(--text-muted);
+            border-radius: 4px; background: transparent;
         }
-        .btn-outline-secondary:hover {
-            background: var(--green-light);
-            color: var(--green-primary);
-            border-color: var(--green-mid);
-        }
+        .btn-outline-secondary:hover { background: var(--green-light); color: var(--green-primary); border-color: var(--green-mid); }
 
-        /* ── Form Controls ── */
+        /* ── Forms ── */
         .form-control, .form-select {
             background: var(--bg-input) !important;
             border: 1px solid var(--border-color) !important;
             color: var(--text-main) !important;
-            border-radius: 4px;
-            transition: border-color .2s, box-shadow .2s, background .3s;
+            border-radius: 4px; transition: all .3s;
         }
         .form-control:focus, .form-select:focus {
+            background: var(--bg-input-focus) !important;
             border-color: var(--green-mid) !important;
-            box-shadow: 0 0 0 3px rgba(45,74,45,.15) !important;
+            box-shadow: 0 0 0 3px rgba(74,122,74,.2) !important;
         }
+        .form-control::placeholder { color: var(--text-muted); }
         .form-label { color: var(--text-muted); font-size: .88rem; }
+        [data-theme="dark"] .form-select option { background: #1e2e1e; color: #e0e0d8; }
 
-        /* ── Badges ── */
-        .nen-badge {
-            display: inline-block;
-            padding: 3px 10px;
-            border-radius: 3px;
-            font-size: .75rem;
-            font-weight: 600;
-            letter-spacing: .3px;
-        }
-        .nen-enhancement    { background:#e8f0e8; color:#2d4a2d; border:1px solid #a5c8a5; }
-        .nen-emission       { background:#e0ecf5; color:#1a4a6a; border:1px solid #7aaac8; }
-        .nen-transmutation  { background:#f5f0e0; color:#7a5a1a; border:1px solid #c8aa60; }
-        .nen-conjuration    { background:#f0e8f5; color:#5a2d7a; border:1px solid #b87ac8; }
-        .nen-manipulation   { background:#f5ece0; color:#7a4a1a; border:1px solid #c89060; }
-        .nen-specialization { background:#f5e0e0; color:#7a2d2d; border:1px solid #c87a7a; }
+        /* ── Nen Badges ── */
+        .nen-badge { display: inline-block; padding: 3px 10px; border-radius: 3px; font-size: .75rem; font-weight: 600; }
+        .nen-enhancement    { background:var(--b-en-bg); color:var(--b-en-tx); border:1px solid var(--b-en-bd); }
+        .nen-emission       { background:var(--b-em-bg); color:var(--b-em-tx); border:1px solid var(--b-em-bd); }
+        .nen-transmutation  { background:var(--b-tr-bg); color:var(--b-tr-tx); border:1px solid var(--b-tr-bd); }
+        .nen-conjuration    { background:var(--b-co-bg); color:var(--b-co-tx); border:1px solid var(--b-co-bd); }
+        .nen-manipulation   { background:var(--b-ma-bg); color:var(--b-ma-tx); border:1px solid var(--b-ma-bd); }
+        .nen-specialization { background:var(--b-sp-bg); color:var(--b-sp-tx); border:1px solid var(--b-sp-bd); }
 
-        [data-theme="dark"] .nen-enhancement    { background:#1b3a1b; color:#a5c8a5; border-color:#4a7a4a; }
-        [data-theme="dark"] .nen-emission       { background:#1a2a3a; color:#70a8c8; border-color:#2a5a7a; }
-        [data-theme="dark"] .nen-transmutation  { background:#2a2410; color:#c8aa60; border-color:#6a5a20; }
-        [data-theme="dark"] .nen-conjuration    { background:#2a1a3a; color:#b87ac8; border-color:#5a2a7a; }
-        [data-theme="dark"] .nen-manipulation   { background:#2e1e0e; color:#c89060; border-color:#7a4a20; }
-        [data-theme="dark"] .nen-specialization { background:#2e1a1a; color:#e07070; border-color:#7a3030; }
-
-        /* ── Divider ── */
-        .glow-divider {
-            border: none;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, var(--green-mid), transparent);
-            margin: 1.5rem 0;
-        }
-
-        /* ── Alert ── */
-        .alert { border-radius: 6px; border: none; }
-        .alert-success { background: var(--alert-success-bg); color: var(--alert-success-text); }
-        .alert-danger  { background: var(--alert-danger-bg);  color: var(--alert-danger-text); }
-        .alert-warning { background: var(--alert-warning-bg); color: var(--alert-warning-text); }
-        .alert-info    { background: var(--alert-info-bg);    color: var(--alert-info-text); }
+        /* ── Alerts ── */
+        .alert { border-radius: 5px; border: none; }
+        .alert-success { background:var(--alert-s-bg); color:var(--alert-s-tx); }
+        .alert-danger  { background:var(--alert-d-bg); color:var(--alert-d-tx); }
+        .alert-warning { background:var(--alert-w-bg); color:var(--alert-w-tx); }
+        .alert-info    { background:var(--alert-i-bg); color:var(--alert-i-tx); }
+        [data-theme="dark"] .btn-close { filter: invert(1); }
 
         /* ── Page Title ── */
         .page-title {
-            font-size: 1.5rem;
-            font-weight: 700;
+            font-size: 1.5rem; font-weight: 700;
             color: var(--title-color);
             border-bottom: 2px solid var(--title-border);
-            padding-bottom: 6px;
-            margin-bottom: 1rem;
+            padding-bottom: 6px; margin-bottom: 1rem;
             transition: color .3s;
         }
 
-        /* ── Guide Banner ── */
+        /* ── Misc ── */
+        .glow-divider {
+            border: none; height: 1px;
+            background: linear-gradient(90deg, transparent, var(--green-mid), transparent);
+            margin: 1.5rem 0;
+        }
         .guide-banner {
             background: var(--green-light);
-            border: 1px solid var(--badge-border);
-            border-radius: 6px;
-            padding: 10px 16px;
+            border: 1px solid var(--border-color);
+            border-radius: 5px; padding: 10px 16px;
             transition: background .3s;
         }
+
+        /* ── Table (admin users) ── */
+        .table { color: var(--text-main) !important; }
+        .table-dark { background: var(--bg-card) !important; color: var(--text-main) !important; }
+        .table-dark td, .table-dark th { color: var(--text-main) !important; border-color: var(--border-color) !important; }
+        [data-theme="light"] .table-dark { background: #ffffff !important; }
+        [data-theme="light"] .table-dark td,
+        [data-theme="light"] .table-dark th { color: #1a1a1a !important; }
     </style>
 </head>
 <body>
@@ -292,69 +253,43 @@
 <nav class="navbar navbar-expand-lg sticky-top">
     <div class="container">
         <div class="navbar-inner">
-            <!-- Brand / Logo -->
             <a class="navbar-brand" href="{{ url_for('characters.index') }}">
                 <img src="{{ url_for('static', filename='img/nen/LogoHxH1.png') }}"
-                     alt="HxH Nen Database"
-                     class="navbar-logo"
+                     alt="HxH Nen Database" class="navbar-logo"
                      onerror="this.style.display='none'; this.nextElementSibling.style.display='inline';">
                 <span style="display:none;">HxH Nen Database</span>
             </a>
 
-            <!-- Toggler (mobile) -->
-            <button class="navbar-toggler border-0 me-2" type="button"
+            <button class="navbar-toggler border-0" type="button"
                     data-bs-toggle="collapse" data-bs-target="#navMenu"
-                    style="color: var(--text-nav);">
-                <span style="font-size:1.2rem;">&#9776;</span>
-            </button>
+                    style="color:var(--text-nav);">&#9776;</button>
 
-            <!-- Nav links -->
             <div class="collapse navbar-collapse" id="navMenu">
                 <ul class="navbar-nav ms-auto align-items-center gap-1">
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('characters.index') }}">หน้าหลัก</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('characters.nen_guide') }}">คู่มือเน็น</a>
-                    </li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('characters.index') }}">หน้าหลัก</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('characters.nen_guide') }}">คู่มือเน็น</a></li>
                     {% if current_user.is_authenticated %}
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('characters.add') }}">เพิ่มตัวละคร</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.admin_users') }}">สมาชิก</a></li>
+                    <li class="nav-item px-1"><span class="nav-link nav-user">{{ current_user.username }}</span></li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('characters.add') }}">เพิ่มตัวละคร</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('auth.admin_users') }}">สมาชิก</a>
-                    </li>
-                    <li class="nav-item px-2">
-                        <span class="nav-link nav-user">{{ current_user.username }}</span>
-                    </li>
-                    <li class="nav-item">
-                        <a class="btn btn-sm btn-outline-secondary px-3"
-                           href="{{ url_for('auth.logout') }}"
-                           style="color:var(--text-nav); border-color:#4a7a4a66;">ออก</a>
+                        <a class="btn btn-sm px-3" href="{{ url_for('auth.logout') }}"
+                           style="border:1px solid rgba(165,200,165,.4); color:var(--text-nav); border-radius:4px;">ออก</a>
                     </li>
                     {% else %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('auth.login') }}">เข้าสู่ระบบ</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="btn btn-sm btn-primary px-3"
-                           href="{{ url_for('auth.register') }}">สมัครสมาชิก</a>
-                    </li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.login') }}">เข้าสู่ระบบ</a></li>
+                    <li class="nav-item"><a class="btn btn-sm btn-primary px-3" href="{{ url_for('auth.register') }}">สมัครสมาชิก</a></li>
                     {% endif %}
-
-                    <!-- Dark Mode Toggle -->
-                    <li class="nav-item ms-2">
+                    <li class="nav-item ms-1">
                         <button class="dark-toggle" onclick="toggleDark()" id="darkBtn">
                             <span id="darkIcon">🌙</span>
-                            <span id="darkLabel">Dark</span>
+                            <span id="darkLabel">Light</span>
                         </button>
                     </li>
                 </ul>
             </div>
         </div>
-        <div class="navbar-subnav">
-            ฐานข้อมูลตัวละครและสายเน็น Hunter x Hunter
-        </div>
+        <div class="navbar-subnav">ฐานข้อมูลตัวละครและสายเน็น Hunter x Hunter</div>
     </div>
 </nav>
 
@@ -369,36 +304,29 @@
             {% endfor %}
         {% endif %}
     {% endwith %}
-
     {% block content %}{% endblock %}
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
     const html = document.documentElement;
-    const savedTheme = localStorage.getItem('hxh-theme') || 'light';
-    html.setAttribute('data-theme', savedTheme);
-    updateToggleUI(savedTheme);
+    const saved = localStorage.getItem('hxh-theme') || 'dark';
+    html.setAttribute('data-theme', saved);
+    updateUI(saved);
 
     function toggleDark() {
-        const current = html.getAttribute('data-theme');
-        const next = current === 'dark' ? 'light' : 'dark';
+        const next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
         html.setAttribute('data-theme', next);
         localStorage.setItem('hxh-theme', next);
-        updateToggleUI(next);
+        updateUI(next);
     }
 
-    function updateToggleUI(theme) {
+    function updateUI(theme) {
         const icon  = document.getElementById('darkIcon');
         const label = document.getElementById('darkLabel');
         if (!icon) return;
-        if (theme === 'dark') {
-            icon.textContent  = '🌙';
-            label.textContent = 'Light';
-        } else {
-            icon.textContent  = '🌙';
-            label.textContent = 'Dark';
-        }
+        icon.textContent  = '🌙';
+        label.textContent = theme === 'dark' ? 'Light' : 'Dark';
     }
 </script>
 </body>
